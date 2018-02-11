@@ -796,7 +796,7 @@ var _a, _b;
 /***/ "../../../../../src/app/study.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\">\n  <h2>{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h2>\n  <p>{{status.currentQuestion.info}}</p>\n  <br>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    required minlength=\"1\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div *ngIf=\"answ.invalid && (answ.dirty || answ.touched)\"\n    class=\"alert alert-danger\"></div>\n</form>"
+module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\">\n  <h1>{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p>{{status.currentQuestion.info}}</p>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    required minlength=\"1\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div *ngIf=\"answ.invalid && (answ.dirty || answ.touched)\"\n    class=\"alert alert-danger\"></div>\n  <br>\n  <br>\n  <h4>{{status.answered ? status.currentQuestion.fullAnswers : \"\"}}</h4>\n</form>"
 
 /***/ }),
 
@@ -881,7 +881,7 @@ var _a, _b;
 /***/ "../../../../../src/app/view.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div (window:keydown.enter)=\"next()\">\n  <h1>{{status.currentQuestion.fullAnswers}}</h1>\n  <h2>{{status.currentQuestion.otherFields}}</h2>\n  <h3>{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h3>\n  <h4>{{status.currentQuestion.info}}</h4>\n  <h4>You answered: {{status.currentAnswerString}}</h4>\n</div>"
+module.exports = "<div (window:keydown.enter)=\"next()\">\n  <h1>{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <br>\n  <h2>{{status.currentQuestion.fullAnswers}}</h2>\n  <br>\n  <h3>{{status.currentQuestion.otherFields}}</h3>\n  <br>\n  <p>{{status.currentQuestion.info}}</p>\n  <br>\n  <h4>You answered: {{status.currentAnswerString}}</h4>\n</div>"
 
 /***/ }),
 
