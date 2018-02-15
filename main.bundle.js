@@ -63,7 +63,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 
 var ApiService = (function () {
     function ApiService() {
-        this.API_URL = "https://remembear-api.herokuapp.com/"; //"http://localhost:8060/";
+        this.API_URL = "http://localhost:8060/"; //"https://remembear-api.herokuapp.com/";//"http://localhost:8060/";
     }
     ApiService.prototype.login = function (user) {
         return this.getJsonFromApi('login', user)
@@ -114,11 +114,11 @@ var ApiService = (function () {
         }
         return path;
     };
+    ApiService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])()
+    ], ApiService);
     return ApiService;
 }());
-ApiService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])()
-], ApiService);
 
 //# sourceMappingURL=api.service.js.map
 
@@ -147,14 +147,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var AppComponent = (function () {
     function AppComponent() {
     }
+    AppComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+            selector: 'app-root',
+            template: __webpack_require__("../../../../../src/app/app.component.html")
+        })
+    ], AppComponent);
     return AppComponent;
 }());
-AppComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
-        selector: 'app-root',
-        template: __webpack_require__("../../../../../src/app/app.component.html")
-    })
-], AppComponent);
 
 //# sourceMappingURL=app.component.js.map
 
@@ -210,27 +210,27 @@ var appRoutes = [
 var AppModule = (function () {
     function AppModule() {
     }
+    AppModule = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */],
+                __WEBPACK_IMPORTED_MODULE_5__login_component__["a" /* LoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_6__main_component__["a" /* MainComponent */],
+                __WEBPACK_IMPORTED_MODULE_7__study_component__["a" /* StudyComponent */],
+                __WEBPACK_IMPORTED_MODULE_8__view_component__["a" /* ViewComponent */],
+                __WEBPACK_IMPORTED_MODULE_9__autofocus_directive__["a" /* AutofocusDirective */]
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
+                __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */].forRoot(appRoutes)
+            ],
+            providers: [__WEBPACK_IMPORTED_MODULE_10__api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_11__auth_guard_service__["a" /* AuthGuardService */], __WEBPACK_IMPORTED_MODULE_12__auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_13__status_service__["a" /* StatusService */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
+        })
+    ], AppModule);
     return AppModule;
 }());
-AppModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */])({
-        declarations: [
-            __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */],
-            __WEBPACK_IMPORTED_MODULE_5__login_component__["a" /* LoginComponent */],
-            __WEBPACK_IMPORTED_MODULE_6__main_component__["a" /* MainComponent */],
-            __WEBPACK_IMPORTED_MODULE_7__study_component__["a" /* StudyComponent */],
-            __WEBPACK_IMPORTED_MODULE_8__view_component__["a" /* ViewComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__autofocus_directive__["a" /* AutofocusDirective */]
-        ],
-        imports: [
-            __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */].forRoot(appRoutes)
-        ],
-        providers: [__WEBPACK_IMPORTED_MODULE_10__api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_11__auth_guard_service__["a" /* AuthGuardService */], __WEBPACK_IMPORTED_MODULE_12__auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_13__status_service__["a" /* StatusService */]],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
-    })
-], AppModule);
 
 //# sourceMappingURL=app.module.js.map
 
@@ -274,14 +274,14 @@ var AuthGuardService = (function () {
         this.router.navigate(['/login']);
         return false;
     };
+    AuthGuardService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+    ], AuthGuardService);
     return AuthGuardService;
+    var _a, _b;
 }());
-AuthGuardService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
-], AuthGuardService);
 
-var _a, _b;
 //# sourceMappingURL=auth-guard.service.js.map
 
 /***/ }),
@@ -332,14 +332,14 @@ var AuthService = (function () {
         this.isLoggedIn = false;
         this.username = undefined;
     };
+    AuthService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */]) === "function" && _a || Object])
+    ], AuthService);
     return AuthService;
+    var _a;
 }());
-AuthService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */]) === "function" && _a || Object])
-], AuthService);
 
-var _a;
 //# sourceMappingURL=auth.service.js.map
 
 /***/ }),
@@ -368,16 +368,16 @@ var AutofocusDirective = (function () {
     AutofocusDirective.prototype.ngOnInit = function () {
         this.elementRef.nativeElement.focus();
     };
+    AutofocusDirective = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+            selector: '[autofocus2]'
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* ElementRef */]) === "function" && _a || Object])
+    ], AutofocusDirective);
     return AutofocusDirective;
+    var _a;
 }());
-AutofocusDirective = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
-        selector: '[autofocus2]'
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* ElementRef */]) === "function" && _a || Object])
-], AutofocusDirective);
 
-var _a;
 //# sourceMappingURL=autofocus.directive.js.map
 
 /***/ }),
@@ -387,20 +387,34 @@ var _a;
 
 "use strict";
 /* unused harmony export AUDIO_LOCATION */
+/* unused harmony export STUDY_TYPE */
 /* unused harmony export KAN_KAN */
 /* unused harmony export KAN_ENG */
 /* unused harmony export VOC_JAP */
 /* unused harmony export VOC_KNA */
 /* unused harmony export VOC_ENG */
 /* unused harmony export VOC_AUD */
+/* unused harmony export SEN_JAP */
+/* unused harmony export SEN_ENG */
+/* unused harmony export SEN_FUR */
+/* unused harmony export SEN_AUD */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SETS; });
-var AUDIO_LOCATION = 'http://localhost:8060/';
+var AUDIO_LOCATION = "https://remembear-api.herokuapp.com/"; //'http://localhost:8060/';
+var STUDY_TYPE;
+(function (STUDY_TYPE) {
+    STUDY_TYPE["NEW"] = "new";
+    STUDY_TYPE["REVIEW"] = "review";
+})(STUDY_TYPE || (STUDY_TYPE = {}));
 var KAN_KAN = "Kanji";
 var KAN_ENG = "English Meaning";
 var VOC_JAP = "Vocab-japan";
 var VOC_KNA = "Vocab-kana";
 var VOC_ENG = "Vocab-translation";
 var VOC_AUD = "Vocab-audio";
+var SEN_JAP = "Sentence-japanese";
+var SEN_ENG = "Sentence-translation";
+var SEN_FUR = "Sentence-Furigana";
+var SEN_AUD = "Sentence-audio";
 var SETS = [{
         name: "Kanji",
         collection: "kanji",
@@ -410,8 +424,8 @@ var SETS = [{
             "Writing"
         ],
         directions: [
-            [KAN_KAN, KAN_ENG, []],
-            [KAN_ENG, KAN_KAN, []]
+            [KAN_KAN, KAN_ENG, ["stroke count", "Kana", "Primitive look-up data."]],
+            [KAN_ENG, KAN_KAN, ["stroke count", "Kana", "Primitive look-up data."]]
         ],
         info: []
     }, {
@@ -430,6 +444,20 @@ var SETS = [{
         ],
         info: ["Part of speech", "Word-type", "Vocab-RTK"],
         audio: VOC_AUD
+    }, {
+        name: "Sentences",
+        collection: "core10k",
+        idField: "2k1-Kanken Opt Sort",
+        directionNames: [
+            "Listening",
+            "Reading"
+        ],
+        directions: [
+            [SEN_AUD, SEN_JAP, [SEN_ENG]],
+            [SEN_JAP, SEN_ENG, [SEN_JAP]]
+        ],
+        info: [],
+        audio: SEN_AUD
     }];
 //# sourceMappingURL=consts.js.map
 
@@ -491,16 +519,16 @@ var LoginComponent = (function () {
         this.authService.logout();
         this.setMessage();
     };
+    LoginComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+            template: __webpack_require__("../../../../../src/app/login.component.html")
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+    ], LoginComponent);
     return LoginComponent;
+    var _a, _b;
 }());
-LoginComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
-        template: __webpack_require__("../../../../../src/app/login.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
-], LoginComponent);
 
-var _a, _b;
 //# sourceMappingURL=login.component.js.map
 
 /***/ }),
@@ -508,7 +536,7 @@ var _a, _b;
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <h3>latest points: {{status.status.latestPoints}}</h3>\n  <br>\n  <br>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 1\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>daily points: {{status.status.pointsByDay}}</h3>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <h3>latest points: {{status.status.latestPoints}}</h3>\n  <br>\n  <br>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 1\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -601,16 +629,16 @@ var MainComponent = (function () {
             });
         });
     };
+    MainComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+            template: __webpack_require__("../../../../../src/app/main.component.html")
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+    ], MainComponent);
     return MainComponent;
+    var _a, _b;
 }());
-MainComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
-        template: __webpack_require__("../../../../../src/app/main.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
-], MainComponent);
 
-var _a, _b;
 //# sourceMappingURL=main.component.js.map
 
 /***/ }),
@@ -721,7 +749,7 @@ var StatusService = (function () {
         this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["clone"](this.currentStudy.questions);
         this.answers = new Map();
         this.qsStillIncorrect.forEach(function (q) {
-            return _this.answers.set(q, { wordId: q.wordId, attempts: [], duration: 0 });
+            return _this.answers.set(q, { wordId: q.wordId, attempts: [] });
         });
         this.currentStudy.startTime = new Date(Date.now());
     };
@@ -750,8 +778,8 @@ var StatusService = (function () {
             this.playCurrentWordAudio();
             //update answer
             this.currentAnswerString = answer;
-            this.currentAnswer.duration += Date.now() - this.answerStartTime;
-            this.currentAnswer.attempts.push(answer);
+            var attempt = { answer: answer, duration: Date.now() - this.answerStartTime };
+            this.currentAnswer.attempts.push(attempt);
             //check if correct
             var correct = this.currentQuestion.answers.indexOf(answer) >= 0;
             if (correct) {
@@ -781,14 +809,14 @@ var StatusService = (function () {
             audio.play();
         }
     };
+    StatusService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */])(),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__api_service__["a" /* ApiService */]) === "function" && _b || Object])
+    ], StatusService);
     return StatusService;
+    var _a, _b;
 }());
-StatusService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__api_service__["a" /* ApiService */]) === "function" && _b || Object])
-], StatusService);
 
-var _a, _b;
 //# sourceMappingURL=status.service.js.map
 
 /***/ }),
@@ -796,7 +824,7 @@ var _a, _b;
 /***/ "../../../../../src/app/study.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\">\n  <h1>{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"!status.isAudioQuestion\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    required minlength=\"1\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div *ngIf=\"answ.invalid && (answ.dirty || answ.touched)\"\n    class=\"alert alert-danger\"></div>\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
+module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"!status.isAudioQuestion\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    minlength=\"0\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
 
 /***/ }),
 
@@ -828,7 +856,7 @@ var StudyComponent = (function () {
         this.next();
     }
     StudyComponent.prototype.next = function () {
-        this.answer = null;
+        this.answer = "";
         this.checked = false;
         this.bgColor = 'White';
         if (!this.status.done()) {
@@ -841,7 +869,7 @@ var StudyComponent = (function () {
     StudyComponent.prototype.check = function () {
         var _this = this;
         //only check once!
-        if (!this.checked && this.answer && this.answer.length > 0) {
+        if (!this.checked) {
             this.checked = true;
             this.correct = this.status.checkAnswer(this.answer);
             if (this.correct) {
@@ -860,20 +888,20 @@ var StudyComponent = (function () {
                 this.next();
             }
             else {
-                this.router.navigate(['/view']);
+                setTimeout(function () { return _this.router.navigate(['/view']); }, 50);
             }
         }
     };
+    StudyComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+            template: __webpack_require__("../../../../../src/app/study.component.html")
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+    ], StudyComponent);
     return StudyComponent;
+    var _a, _b;
 }());
-StudyComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
-        template: __webpack_require__("../../../../../src/app/study.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
-], StudyComponent);
 
-var _a, _b;
 //# sourceMappingURL=study.component.js.map
 
 /***/ }),
@@ -911,18 +939,19 @@ var ViewComponent = (function () {
         this.router = router;
     }
     ViewComponent.prototype.next = function () {
-        this.router.navigate(['/study']);
+        var _this = this;
+        setTimeout(function () { return _this.router.navigate(['/study']); }, 50);
     };
+    ViewComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+            template: __webpack_require__("../../../../../src/app/view.component.html")
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+    ], ViewComponent);
     return ViewComponent;
+    var _a, _b;
 }());
-ViewComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
-        template: __webpack_require__("../../../../../src/app/view.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
-], ViewComponent);
 
-var _a, _b;
 //# sourceMappingURL=view.component.js.map
 
 /***/ }),
@@ -936,7 +965,6 @@ var _a, _b;
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
-// The file contents for the current environment will overwrite these during build.
 var environment = {
     production: false
 };
