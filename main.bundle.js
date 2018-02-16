@@ -536,7 +536,7 @@ var LoginComponent = (function () {
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>daily points: {{status.status.pointsByDay}}</h3>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <h3>latest points: {{status.status.latestPoints}}</h3>\n  <br>\n  <br>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 1\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>daily points: {{status.status.pointsByDay}}</h3>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <h3>latest points: {{status.status.latestPoints}}</h3>\n  <br>\n  <br>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2 || (s == 0 && d == 1) || (s == 1 && d == 2)\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 1\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
