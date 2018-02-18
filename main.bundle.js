@@ -466,7 +466,7 @@ var SETS = [{
 /***/ "../../../../../src/app/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>LOGIN</h1>\n<form (ngSubmit)=\"login()\" #loginForm=\"ngForm\">\n  Username:\n  <input id=\"name\" name=\"name\" class=\"form-control\"\n    required minlength=\"4\" [(ngModel)]=\"user.username\" #name=\"ngModel\" >\n\n  <div *ngIf=\"name.invalid && (name.dirty || name.touched)\"\n       class=\"alert alert-danger\">\n\n    <div *ngIf=\"name.errors.required\">\n      Name is required.\n    </div>\n    <div *ngIf=\"name.errors.minlength\">\n      Name must be at least 4 characters long.\n    </div>\n\n  </div>\n\n  <br>\n\n  Password:\n  <input id=\"pass\" name=\"pass\" type=\"password\" class=\"form-control\"\n    required minlength=\"4\" [(ngModel)]=\"user.password\" #pass=\"ngModel\" >\n\n  <div *ngIf=\"pass.invalid && (pass.dirty || pass.touched)\"\n       class=\"alert alert-danger\">\n\n    <div *ngIf=\"pass.errors.required\">\n      Password is required.\n    </div>\n    <div *ngIf=\"pass.errors.minlength\">\n      Password must be at least 4 characters long.\n    </div>\n\n  </div>\n\n  <br>\n  <button type=\"submit\" class=\"btn btn-success\" [disabled]=\"!loginForm.form.valid\">Login</button>\n</form>"
+module.exports = "<div style=\"background-image: url('../assets/panda.png'); background-repeat: no-repeat;\nbackground-position: center; height: 100vh;\">\n<h1>LOGIN</h1>\n<form (ngSubmit)=\"login()\" #loginForm=\"ngForm\">\n  <!--Username:-->\n  <input id=\"name\" name=\"name\" class=\"form-control\"\n    required minlength=\"4\" [(ngModel)]=\"user.username\" #name=\"ngModel\" >\n\n  <div *ngIf=\"name.invalid && (name.dirty || name.touched)\"\n       class=\"alert alert-danger\">\n\n    <div *ngIf=\"name.errors.required\">\n      Name is required.\n    </div>\n    <div *ngIf=\"name.errors.minlength\">\n      Name must be at least 4 characters long.\n    </div>\n\n  </div>\n\n  <br>\n\n  <!--Password:-->\n  <input id=\"pass\" name=\"pass\" type=\"password\" class=\"form-control\"\n    required minlength=\"4\" [(ngModel)]=\"user.password\" #pass=\"ngModel\" >\n\n  <div *ngIf=\"pass.invalid && (pass.dirty || pass.touched)\"\n       class=\"alert alert-danger\">\n\n    <div *ngIf=\"pass.errors.required\">\n      Password is required.\n    </div>\n    <div *ngIf=\"pass.errors.minlength\">\n      Password must be at least 4 characters long.\n    </div>\n\n  </div>\n\n  <br>\n  <button type=\"submit\" class=\"btn btn-success\" [disabled]=\"!loginForm.form.valid\">Login</button>\n</form>\n</div>"
 
 /***/ }),
 
@@ -521,7 +521,8 @@ var LoginComponent = (function () {
     };
     LoginComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
-            template: __webpack_require__("../../../../../src/app/login.component.html")
+            template: __webpack_require__("../../../../../src/app/login.component.html"),
+            styles: [".container{\n    min-height:1000;\n  }"]
         }),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
     ], LoginComponent);
@@ -536,7 +537,7 @@ var LoginComponent = (function () {
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>daily points: {{status.status.pointsByDay}}</h3>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <h3>latest points: {{status.status.latestPoints}}</h3>\n  <br>\n  <br>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2 || (s == 0 && d == 1)\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 1\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <div style=\"text-align:center;\">\n    <svg height=\"50\" width=\"500\">\n      <polyline [attr.points]=\"status.pointsLine\"\n        style=\"fill:none;stroke:black;stroke-width:1\" />/>\n    </svg>\n  </div>\n  <h3>daily points: {{status.status.pointsByDay}}</h3>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <h3>latest points: {{status.status.latestPoints}}</h3>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2 || (s == 0 && d == 1)\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 1\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -705,12 +706,22 @@ var StatusService = (function () {
     function StatusService(authService, apiService) {
         this.authService = authService;
         this.apiService = apiService;
+        this.pointsLine = "";
         this.username = this.authService.username;
         this.updateUserStatus();
     }
     StatusService.prototype.updateUserStatus = function () {
         var _this = this;
-        this.apiService.getUserStatus(this.username).then(function (s) { return _this.status = s; });
+        this.apiService.getUserStatus(this.username).then(function (s) { return _this.status = s; })
+            .then(function () { return _this.updatePointsLine(); });
+    };
+    StatusService.prototype.updatePointsLine = function () {
+        if (this.status.pointsByDay.length > 1) {
+            var norm_1 = 50 / __WEBPACK_IMPORTED_MODULE_0_lodash__["max"](this.status.pointsByDay);
+            var interval_1 = 500 / (this.status.pointsByDay.length - 1);
+            this.pointsLine = this.status.pointsByDay
+                .map(function (p, i) { return (i * interval_1) + "," + (50 - (norm_1 * p)); }).join(" ");
+        }
     };
     StatusService.prototype.startNewStudy = function (setIndex, dirIndex) {
         return __awaiter(this, void 0, void 0, function () {
@@ -773,7 +784,6 @@ var StatusService = (function () {
     StatusService.prototype.checkAnswer = function (answer) {
         var _this = this;
         if (!this.answered) {
-            answer = this.normalizeAnswer(answer);
             this.answered = true;
             this.playCurrentWordAudio();
             //update answer
@@ -781,7 +791,7 @@ var StatusService = (function () {
             var attempt = { answer: answer, duration: Date.now() - this.answerStartTime };
             this.currentAnswer.attempts.push(attempt);
             //check if correct
-            var correct = this.currentQuestion.answers.indexOf(answer) >= 0;
+            var correct = this.currentQuestion.answers.indexOf(this.normalizeAnswer(answer)) >= 0;
             if (correct) {
                 __WEBPACK_IMPORTED_MODULE_0_lodash__["remove"](this.qsStillIncorrect, function (q) { return q === _this.currentQuestion; });
             }
@@ -796,7 +806,9 @@ var StatusService = (function () {
     };
     StatusService.prototype.normalizeAnswer = function (answer) {
         answer = answer.replace(/ *\([^)]*\) */g, ""); //remove parentheses
-        return __WEBPACK_IMPORTED_MODULE_0_lodash__["trim"](__WEBPACK_IMPORTED_MODULE_0_lodash__["toLower"](answer));
+        answer = answer.replace(/[&-.'* 。　]/g, ""); //remove special chars
+        answer = __WEBPACK_IMPORTED_MODULE_0_lodash__["trim"](__WEBPACK_IMPORTED_MODULE_0_lodash__["toLower"](answer)); //lower case and remove whitespace
+        return answer.replace(/s$/, ''); //remove trailing -s for plural
     };
     StatusService.prototype.done = function () {
         return this.qsStillIncorrect.length === 0;
@@ -824,7 +836,7 @@ var StatusService = (function () {
 /***/ "../../../../../src/app/study.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"!status.isAudioQuestion\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    minlength=\"0\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
+module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"!status.isAudioQuestion\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
 
 /***/ }),
 
