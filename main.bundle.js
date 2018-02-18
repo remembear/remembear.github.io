@@ -710,10 +710,23 @@ var StatusService = (function () {
         this.username = this.authService.username;
         this.updateUserStatus();
     }
-    StatusService.prototype.updateUserStatus = function () {
-        var _this = this;
-        this.apiService.getUserStatus(this.username).then(function (s) { return _this.status = s; })
-            .then(function () { return _this.updatePointsLine(); });
+    StatusService.prototype.updateUserStatus = function (status) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!status) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.apiService.getUserStatus(this.username)];
+                    case 1:
+                        status = _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        this.status = status;
+                        this.updatePointsLine();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     StatusService.prototype.updatePointsLine = function () {
         if (this.status.pointsByDay.length > 1) {
@@ -799,7 +812,7 @@ var StatusService = (function () {
                 this.currentStudy.endTime = new Date(Date.now());
                 this.currentStudy.answers = Array.from(this.answers.values());
                 this.apiService.sendResults(this.currentStudy, this.authService.username)
-                    .then(function (s) { return _this.status = s; });
+                    .then(function (s) { return _this.updateUserStatus(s); });
             }
             return correct;
         }
