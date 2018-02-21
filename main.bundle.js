@@ -770,7 +770,7 @@ var StatusService = (function () {
     };
     StatusService.prototype.startStudy = function () {
         var _this = this;
-        this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["clone"](this.currentStudy.questions);
+        this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["shuffle"](this.currentStudy.questions);
         this.answers = new Map();
         this.qsStillIncorrect.forEach(function (q) {
             return _this.answers.set(q, { wordId: q.wordId, attempts: [] });
@@ -779,11 +779,9 @@ var StatusService = (function () {
     };
     StatusService.prototype.nextQuestion = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var nextIndex;
             return __generator(this, function (_a) {
                 this.answered = false;
-                nextIndex = __WEBPACK_IMPORTED_MODULE_0_lodash__["random"](this.qsStillIncorrect.length - 1);
-                this.currentQuestion = this.qsStillIncorrect[nextIndex];
+                this.currentQuestion = this.qsStillIncorrect[0];
                 this.isAudioQuestion = this.currentQuestion.question.indexOf('.mp3') > 0;
                 this.currentAnswer = this.answers.get(this.currentQuestion);
                 this.answerStartTime = Date.now();
@@ -805,8 +803,9 @@ var StatusService = (function () {
             this.currentAnswer.attempts.push(attempt);
             //check if correct
             var correct = this.currentQuestion.answers.indexOf(this.normalizeAnswer(answer)) >= 0;
-            if (correct) {
-                __WEBPACK_IMPORTED_MODULE_0_lodash__["remove"](this.qsStillIncorrect, function (q) { return q === _this.currentQuestion; });
+            this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["drop"](this.qsStillIncorrect);
+            if (!correct) {
+                this.qsStillIncorrect.push(this.currentQuestion);
             }
             if (this.done()) {
                 this.currentStudy.endTime = new Date(Date.now());
@@ -819,9 +818,10 @@ var StatusService = (function () {
     };
     StatusService.prototype.normalizeAnswer = function (answer) {
         answer = answer.replace(/ *\([^)]*\) */g, ""); //remove parentheses
-        answer = answer.replace(/[&-.'* 。　]/g, ""); //remove special chars
+        answer = answer.replace(/[\/&-.'* 。　]/g, ""); //remove special chars
         answer = __WEBPACK_IMPORTED_MODULE_0_lodash__["trim"](__WEBPACK_IMPORTED_MODULE_0_lodash__["toLower"](answer)); //lower case and remove whitespace
-        return answer.replace(/s$/, ''); //remove trailing -s for plural
+        answer = answer.replace(/s$/, ''); //remove trailing -s for plural
+        return answer.replace(/th$/, ''); //remove trailing -th
     };
     StatusService.prototype.done = function () {
         return this.qsStillIncorrect.length === 0;
