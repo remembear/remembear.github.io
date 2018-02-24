@@ -537,7 +537,7 @@ var LoginComponent = (function () {
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <div style=\"text-align:center;\">\n    <svg height=\"50\" width=\"500\">\n      <polyline [attr.points]=\"status.pointsLine\"\n        style=\"fill:none;stroke:black;stroke-width:1\" />/>\n    </svg>\n  </div>\n  <h3>daily points: {{status.status.pointsByDay}}</h3>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <h3>latest points: {{status.status.latestPoints}}</h3>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2 || (s == 0 && d == 1)\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 1\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\">\n    <svg height=\"70\" width=\"500\">\n      <polyline [attr.points]=\"status.pointsGraph\"\n        style=\"fill:none;stroke:black;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.studiesGraph\"\n        style=\"fill:none;stroke:blue;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.timeGraph\"\n        style=\"fill:none;stroke:red;stroke-width:1\" />/>\n    </svg>\n  </div>\n  <p>daily points: {{status.status.pointsPerDay.slice(-7)}}<br>\n  <span [ngStyle]=\"{'color':'blue'}\">daily studies: {{status.status.studiesPerDay.slice(-7)}}</span><br>\n  <span [ngStyle]=\"{'color':'red'}\">daily thinking: {{status.status.thinkingPerDay.slice(-7)}}</span><br>\n  latest points: {{status.status.latestPoints}}</p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2 || (s == 0 && d == 1)\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -706,7 +706,11 @@ var StatusService = (function () {
     function StatusService(authService, apiService) {
         this.authService = authService;
         this.apiService = apiService;
-        this.pointsLine = "";
+        this.GRAPH_WIDTH = 500;
+        this.GRAPH_HEIGHT = 100;
+        this.pointsGraph = "";
+        this.studiesGraph = "";
+        this.timeGraph = "";
         this.username = this.authService.username;
         this.updateUserStatus();
     }
@@ -722,18 +726,25 @@ var StatusService = (function () {
                         _a.label = 2;
                     case 2:
                         this.status = status;
-                        this.updatePointsLine();
+                        this.status.thinkingPerDay = this.status.thinkingPerDay.map(function (t) { return __WEBPACK_IMPORTED_MODULE_0_lodash__["round"](t); });
+                        this.updateGraphs();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    StatusService.prototype.updatePointsLine = function () {
-        if (this.status.pointsByDay.length > 1) {
-            var norm_1 = 50 / __WEBPACK_IMPORTED_MODULE_0_lodash__["max"](this.status.pointsByDay);
-            var interval_1 = 500 / (this.status.pointsByDay.length - 1);
-            this.pointsLine = this.status.pointsByDay
-                .map(function (p, i) { return (i * interval_1) + "," + (50 - (norm_1 * p)); }).join(" ");
+    StatusService.prototype.updateGraphs = function () {
+        this.pointsGraph = this.toGraph(this.status.pointsPerDay);
+        this.studiesGraph = this.toGraph(this.status.studiesPerDay);
+        this.timeGraph = this.toGraph(this.status.thinkingPerDay);
+    };
+    StatusService.prototype.toGraph = function (values) {
+        var _this = this;
+        if (values.length > 1) {
+            var norm_1 = this.GRAPH_HEIGHT / __WEBPACK_IMPORTED_MODULE_0_lodash__["max"](values);
+            var interval_1 = this.GRAPH_WIDTH / (values.length - 1);
+            return values
+                .map(function (p, i) { return (i * interval_1) + "," + (_this.GRAPH_HEIGHT + 1 - (norm_1 * p)); }).join(" ");
         }
     };
     StatusService.prototype.startNewStudy = function (setIndex, dirIndex) {
@@ -783,6 +794,8 @@ var StatusService = (function () {
                 this.answered = false;
                 this.currentQuestion = this.qsStillIncorrect[0];
                 this.isAudioQuestion = this.currentQuestion.question.indexOf('.mp3') > 0;
+                this.showInfo = !this.isAudioQuestion
+                    && !(this.currentStudy.set == 1 && this.currentStudy.direction == 1);
                 this.currentAnswer = this.answers.get(this.currentQuestion);
                 this.answerStartTime = Date.now();
                 if (this.isAudioQuestion) {
@@ -849,7 +862,7 @@ var StatusService = (function () {
 /***/ "../../../../../src/app/study.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"!status.isAudioQuestion\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
+module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
 
 /***/ }),
 
@@ -934,7 +947,7 @@ var StudyComponent = (function () {
 /***/ "../../../../../src/app/view.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div (window:keydown.enter)=\"next()\">\n  <h1>{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <br>\n  <h2>{{status.currentQuestion.fullAnswers}}</h2>\n  <br>\n  <h3 *ngIf=\"status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h3>\n  <p *ngIf=\"status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n  <br>\n  <p>{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <h4>You answered: {{status.currentAnswerString}}</h4>\n</div>"
+module.exports = "<div (window:keydown.enter)=\"next()\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <br>\n  <h2>{{status.currentQuestion.fullAnswers}}</h2>\n  <br>\n  <h3 *ngIf=\"status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h3>\n  <p *ngIf=\"status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n  <br>\n  <p>{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <h4>You answered: {{status.currentAnswerString}}</h4>\n</div>"
 
 /***/ }),
 
