@@ -382,87 +382,6 @@ var AutofocusDirective = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/consts.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export AUDIO_LOCATION */
-/* unused harmony export STUDY_TYPE */
-/* unused harmony export KAN_KAN */
-/* unused harmony export KAN_ENG */
-/* unused harmony export VOC_JAP */
-/* unused harmony export VOC_KNA */
-/* unused harmony export VOC_ENG */
-/* unused harmony export VOC_AUD */
-/* unused harmony export SEN_JAP */
-/* unused harmony export SEN_ENG */
-/* unused harmony export SEN_FUR */
-/* unused harmony export SEN_AUD */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SETS; });
-var AUDIO_LOCATION = "https://remembear-api.herokuapp.com/"; //'http://localhost:8060/';
-var STUDY_TYPE;
-(function (STUDY_TYPE) {
-    STUDY_TYPE["NEW"] = "new";
-    STUDY_TYPE["REVIEW"] = "review";
-})(STUDY_TYPE || (STUDY_TYPE = {}));
-var KAN_KAN = "Kanji";
-var KAN_ENG = "English Meaning";
-var VOC_JAP = "Vocab-japan";
-var VOC_KNA = "Vocab-kana";
-var VOC_ENG = "Vocab-translation";
-var VOC_AUD = "Vocab-audio";
-var SEN_JAP = "Sentence-japanese";
-var SEN_ENG = "Sentence-translation";
-var SEN_FUR = "Sentence-Furigana";
-var SEN_AUD = "Sentence-audio";
-var SETS = [{
-        name: "Kanji",
-        collection: "kanji",
-        idField: "2k1KO Index",
-        directionNames: [
-            "Reading",
-            "Writing"
-        ],
-        directions: [
-            [KAN_KAN, KAN_ENG, ["stroke count", "Kana", "Primitive look-up data."]],
-            [KAN_ENG, KAN_KAN, ["stroke count", "Kana", "Primitive look-up data."]]
-        ],
-        info: []
-    }, {
-        name: "Vocab",
-        collection: "core10k",
-        idField: "2k1-Kanken Opt Sort",
-        directionNames: [
-            "Writing",
-            "Reading",
-            "Listening"
-        ],
-        directions: [
-            [VOC_ENG, VOC_JAP, [VOC_KNA]],
-            [VOC_JAP, VOC_KNA, [VOC_ENG]],
-            [VOC_AUD, VOC_ENG, [VOC_JAP]]
-        ],
-        info: ["Part of speech", "Word-type", "Vocab-RTK"],
-        audio: VOC_AUD
-    }, {
-        name: "Sentences",
-        collection: "core10k",
-        idField: "2k1-Kanken Opt Sort",
-        directionNames: [
-            "Listening",
-            "Reading"
-        ],
-        directions: [
-            [SEN_AUD, SEN_JAP, [SEN_ENG]],
-            [SEN_JAP, SEN_ENG, [SEN_JAP]]
-        ],
-        info: [],
-        audio: SEN_AUD
-    }];
-//# sourceMappingURL=consts.js.map
-
-/***/ }),
-
 /***/ "../../../../../src/app/login.component.html":
 /***/ (function(module, exports) {
 
@@ -537,7 +456,7 @@ var LoginComponent = (function () {
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\">\n    <svg height=\"70\" width=\"500\">\n      <polyline [attr.points]=\"status.pointsGraph\"\n        style=\"fill:none;stroke:black;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.studiesGraph\"\n        style=\"fill:none;stroke:blue;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.timeGraph\"\n        style=\"fill:none;stroke:red;stroke-width:1\" />/>\n    </svg>\n  </div>\n  <p>daily points: {{status.status.pointsPerDay.slice(-7)}}<br>\n  <span [ngStyle]=\"{'color':'blue'}\">daily studies: {{status.status.studiesPerDay.slice(-7)}}</span><br>\n  <span [ngStyle]=\"{'color':'red'}\">daily thinking: {{status.status.thinkingPerDay.slice(-7)}}</span><br>\n  latest points: {{status.status.latestPoints}}</p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directionNames; let d = index\">\n      {{set.name}} {{dir}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2 || (s == 0 && d == 1)\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\">\n    <svg height=\"70\" width=\"500\">\n      <polyline [attr.points]=\"status.pointsGraph\"\n        style=\"fill:none;stroke:black;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.studiesGraph\"\n        style=\"fill:none;stroke:blue;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.timeGraph\"\n        style=\"fill:none;stroke:red;stroke-width:1\" />/>\n    </svg>\n  </div>\n  <p>daily points: {{status.status.pointsPerDay.slice(-7)}}<br>\n  <span [ngStyle]=\"{'color':'blue'}\">daily studies: {{status.status.studiesPerDay.slice(-7)}}</span><br>\n  <span [ngStyle]=\"{'color':'red'}\">daily thinking: {{status.status.thinkingPerDay.slice(-7)}}</span><br>\n  latest points: {{status.status.latestPoints}}</p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2 || (s == 0 && d == 1)\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -548,7 +467,7 @@ module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{st
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__status_service__ = __webpack_require__("../../../../../src/app/status.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__consts__ = __webpack_require__("../../../../../src/app/consts.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_consts__ = __webpack_require__("../../../../../src/app/shared/consts.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MainComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -602,7 +521,7 @@ var MainComponent = (function () {
     function MainComponent(status, router) {
         this.status = status;
         this.router = router;
-        this.sets = __WEBPACK_IMPORTED_MODULE_3__consts__["a" /* SETS */];
+        this.sets = __WEBPACK_IMPORTED_MODULE_3__shared_consts__["a" /* SETS */];
     }
     MainComponent.prototype.new = function (setIndex, dirIndex) {
         return __awaiter(this, void 0, void 0, function () {
@@ -644,6 +563,132 @@ var MainComponent = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/consts.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export AUDIO_LOCATION */
+/* unused harmony export STUDY_TYPE */
+/* unused harmony export KAN_KAN */
+/* unused harmony export KAN_ENG */
+/* unused harmony export VOC_JAP */
+/* unused harmony export VOC_KNA */
+/* unused harmony export VOC_ENG */
+/* unused harmony export VOC_AUD */
+/* unused harmony export SEN_JAP */
+/* unused harmony export SEN_ENG */
+/* unused harmony export SEN_FUR */
+/* unused harmony export SEN_AUD */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SETS; });
+var AUDIO_LOCATION = "https://remembear-api.herokuapp.com/"; //'http://localhost:8060/';
+var STUDY_TYPE;
+(function (STUDY_TYPE) {
+    STUDY_TYPE["NEW"] = "new";
+    STUDY_TYPE["REVIEW"] = "review";
+})(STUDY_TYPE || (STUDY_TYPE = {}));
+var KAN_KAN = "Kanji";
+var KAN_ENG = "English Meaning";
+var VOC_JAP = "Vocab-japan";
+var VOC_KNA = "Vocab-kana";
+var VOC_ENG = "Vocab-translation";
+var VOC_AUD = "Vocab-audio";
+var SEN_JAP = "Sentence-japanese";
+var SEN_ENG = "Sentence-translation";
+var SEN_FUR = "Sentence-Furigana";
+var SEN_AUD = "Sentence-audio";
+var SETS = [{
+        name: "Kanji",
+        collection: "kanji",
+        idField: "2k1KO Index",
+        directions: [
+            {
+                name: "Reading", question: KAN_KAN, answer: KAN_ENG,
+                extras: ["stroke count", "Kana", "Primitive look-up data."]
+            },
+            {
+                name: "Writing", numOptions: 25, question: KAN_ENG, answer: KAN_KAN,
+                extras: ["stroke count", "Kana", "Primitive look-up data."]
+            }
+        ],
+        info: []
+    }, {
+        name: "Vocab",
+        collection: "core10k",
+        idField: "2k1-Kanken Opt Sort",
+        directions: [
+            { name: "Writing", question: VOC_ENG, answer: VOC_JAP, extras: [VOC_KNA] },
+            { name: "Reading", question: VOC_JAP, answer: VOC_KNA, extras: [VOC_ENG] },
+            { name: "Listening", question: VOC_AUD, answer: VOC_ENG, extras: [VOC_JAP] }
+        ],
+        info: ["Part of speech", "Word-type", "Vocab-RTK"],
+        audio: VOC_AUD
+    }, {
+        name: "Sentences",
+        collection: "core10k",
+        idField: "2k1-Kanken Opt Sort",
+        directions: [
+            {
+                name: "Listening", numOptions: 10, question: SEN_AUD, answer: SEN_JAP,
+                extras: [SEN_ENG]
+            },
+            {
+                name: "Reading", numOptions: 10, question: SEN_JAP, answer: SEN_ENG,
+                extras: [SEN_JAP]
+            }
+        ],
+        info: [],
+        audio: SEN_AUD
+    }];
+//# sourceMappingURL=consts.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/util.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+/* unused harmony export createAnswers */
+/* harmony export (immutable) */ __webpack_exports__["a"] = normalizeSingleAnswer;
+
+var words = ['the', 'and', 'with', 'at', 'to', 'for', 'a'];
+var endings = ['th', 'te', 'ed', 'ly', 'ty', 'al', 'ing', 'ment', 'ness', 'tion', 'ous', 'e', 's'];
+function createAnswers(entry) {
+    return entry.replace(/ *\([^)]*\) */g, "") //remove parentheses
+        .replace(/ *\[[^\]]*]/g, "") //remove square brackets
+        .replace(/;/g, ",") //semicolons to commas
+        .split(',') //split alternatives
+        .map(function (a) { return normalizeAnswer(a); });
+}
+function normalizeSingleAnswer(answer) {
+    answer = answer.replace(/ *\([^)]*\) */g, ""); //remove parentheses
+    return normalizeAnswer(answer);
+}
+function normalizeAnswer(answer) {
+    answer = __WEBPACK_IMPORTED_MODULE_0_lodash__["trim"](__WEBPACK_IMPORTED_MODULE_0_lodash__["toLower"](answer)); //lower case and trim before removing words
+    answer = removeIgnoredWords(answer); //replace all ignored words
+    answer = answer.replace(/[\/&-.,'* ]/g, ""); //remove eng special chars
+    answer = answer.replace(/[。　]/g, ""); //remove jap special chars
+    return removeIgnoredEndings(answer); //remove ignored endings
+}
+function normalizeSentenceAnswer(answer) {
+    answer = answer.replace(/[ですま。　]/g, ""); //remove special chars
+    //TODO
+}
+function removeIgnoredWords(s) {
+    words.forEach(function (w) { return s = s.replace(new RegExp(' ' + w, 'g'), ''); });
+    words.forEach(function (w) { return s = s.replace(new RegExp(w + ' ', 'g'), ''); });
+    return s;
+}
+function removeIgnoredEndings(s) {
+    endings.forEach(function (w) { return s = s.replace(new RegExp(w + '$'), ''); });
+    return s;
+}
+//# sourceMappingURL=util.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/status.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -651,8 +696,9 @@ var MainComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_service__ = __webpack_require__("../../../../../src/app/auth.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api_service__ = __webpack_require__("../../../../../src/app/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_util__ = __webpack_require__("../../../../../src/app/shared/util.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__auth_service__ = __webpack_require__("../../../../../src/app/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__api_service__ = __webpack_require__("../../../../../src/app/api.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StatusService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -698,6 +744,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+
 
 
 
@@ -753,6 +800,7 @@ var StatusService = (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        console.log(this.getCurrentLocalTimeAsUTC());
                         _a = this;
                         return [4 /*yield*/, this.apiService.getNewQuestions(this.username, setIndex, dirIndex)];
                     case 1:
@@ -781,12 +829,13 @@ var StatusService = (function () {
     };
     StatusService.prototype.startStudy = function () {
         var _this = this;
+        this.done = false;
         this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["shuffle"](this.currentStudy.questions);
         this.answers = new Map();
         this.qsStillIncorrect.forEach(function (q) {
             return _this.answers.set(q, { wordId: q.wordId, attempts: [] });
         });
-        this.currentStudy.startTime = new Date(Date.now());
+        this.currentStudy.startTime = this.getCurrentLocalTimeAsUTC();
     };
     StatusService.prototype.nextQuestion = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -809,35 +858,36 @@ var StatusService = (function () {
         var _this = this;
         if (!this.answered) {
             this.answered = true;
-            this.playCurrentWordAudio();
+            if (!this.isAudioQuestion) {
+                this.playCurrentWordAudio();
+            }
             //update answer
             this.currentAnswerString = answer;
             var attempt = { answer: answer, duration: Date.now() - this.answerStartTime };
             this.currentAnswer.attempts.push(attempt);
             //check if correct
-            var correct = this.currentQuestion.answers.indexOf(this.normalizeAnswer(answer)) >= 0;
+            var correct = void 0;
+            if (this.currentStudy.set === 2) {
+                //this.currentQuestion.answers[0] === this.
+            }
+            else {
+                //console.log(normalizeSingleAnswer(answer), this.currentQuestion.answers)
+                correct = this.currentQuestion.answers.indexOf(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["a" /* normalizeSingleAnswer */])(answer)) >= 0;
+            }
             this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["drop"](this.qsStillIncorrect);
             if (!correct) {
                 this.qsStillIncorrect.push(this.currentQuestion);
             }
-            if (this.done()) {
-                this.currentStudy.endTime = new Date(Date.now());
+            if (this.qsStillIncorrect.length === 0) {
+                this.done = true;
+                this.currentStudy.endTime = this.getCurrentLocalTimeAsUTC();
                 this.currentStudy.answers = Array.from(this.answers.values());
                 this.apiService.sendResults(this.currentStudy, this.authService.username)
                     .then(function (s) { return _this.updateUserStatus(s); });
+                //.then(() => this.done = true);
             }
             return correct;
         }
-    };
-    StatusService.prototype.normalizeAnswer = function (answer) {
-        answer = answer.replace(/ *\([^)]*\) */g, ""); //remove parentheses
-        answer = answer.replace(/[\/&-.'* 。　]/g, ""); //remove special chars
-        answer = __WEBPACK_IMPORTED_MODULE_0_lodash__["trim"](__WEBPACK_IMPORTED_MODULE_0_lodash__["toLower"](answer)); //lower case and remove whitespace
-        answer = answer.replace(/s$/, ''); //remove trailing -s for plural
-        return answer.replace(/th$/, ''); //remove trailing -th
-    };
-    StatusService.prototype.done = function () {
-        return this.qsStillIncorrect.length === 0;
     };
     StatusService.prototype.playCurrentWordAudio = function () {
         if (this.currentQuestion && this.currentQuestion.audio) {
@@ -847,9 +897,14 @@ var StatusService = (function () {
             audio.play();
         }
     };
+    StatusService.prototype.getCurrentLocalTimeAsUTC = function () {
+        var date = new Date(Date.now());
+        date.setTime(date.getTime() - date.getTimezoneOffset() * 60 * 1000); // - 24*60*60*1000)
+        return date;
+    };
     StatusService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__api_service__["a" /* ApiService */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */]) === "function" && _b || Object])
     ], StatusService);
     return StatusService;
     var _a, _b;
@@ -890,14 +945,14 @@ var StudyComponent = (function () {
     function StudyComponent(status, router) {
         this.status = status;
         this.router = router;
-        this.DELAY = 2000;
+        this.DELAY = 3000;
         this.next();
     }
     StudyComponent.prototype.next = function () {
         this.answer = "";
         this.checked = false;
         this.bgColor = 'White';
-        if (!this.status.done()) {
+        if (!this.status.done) {
             this.status.nextQuestion();
         }
         else {
