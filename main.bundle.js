@@ -456,7 +456,7 @@ var LoginComponent = (function () {
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\">\n    <svg height=\"70\" width=\"500\">\n      <polyline [attr.points]=\"status.pointsGraph\"\n        style=\"fill:none;stroke:black;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.studiesGraph\"\n        style=\"fill:none;stroke:blue;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.timeGraph\"\n        style=\"fill:none;stroke:red;stroke-width:1\" />/>\n    </svg>\n  </div>\n  <p>daily points: {{status.status.pointsPerDay.slice(-7)}}<br>\n  <span [ngStyle]=\"{'color':'blue'}\">daily studies: {{status.status.studiesPerDay.slice(-7)}}</span><br>\n  <span [ngStyle]=\"{'color':'red'}\">daily thinking: {{status.status.thinkingPerDay.slice(-7)}}</span><br>\n  latest points: {{status.status.latestPoints}}</p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2 || (s == 0 && d == 1)\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\">\n    <svg height=\"70\" width=\"500\">\n      <polyline [attr.points]=\"status.pointsGraph\"\n        style=\"fill:none;stroke:black;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.studiesGraph\"\n        style=\"fill:none;stroke:blue;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.timeGraph\"\n        style=\"fill:none;stroke:red;stroke-width:1\" />/>\n    </svg>\n  </div>\n  <p>daily points: {{status.status.pointsPerDay.slice(-7)}}<br>\n  <span [ngStyle]=\"{'color':'blue'}\">daily studies: {{status.status.studiesPerDay.slice(-7)}}</span><br>\n  <span [ngStyle]=\"{'color':'red'}\">daily thinking: {{status.status.thinkingPerDay.slice(-7)}}</span><br>\n  latest points: {{status.status.latestPoints}}</p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -634,6 +634,10 @@ var SETS = [{
             {
                 name: "Reading", numOptions: 10, question: SEN_JAP, answer: SEN_ENG,
                 extras: [SEN_JAP]
+            },
+            {
+                name: "Writing", numOptions: 10, question: SEN_ENG, answer: SEN_JAP,
+                extras: []
             }
         ],
         info: [],
@@ -650,10 +654,11 @@ var SETS = [{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /* unused harmony export createAnswers */
-/* harmony export (immutable) */ __webpack_exports__["a"] = normalizeSingleAnswer;
+/* harmony export (immutable) */ __webpack_exports__["b"] = normalizeSingleAnswer;
+/* harmony export (immutable) */ __webpack_exports__["a"] = normalizeSentenceAnswer;
 
-var words = ['the', 'and', 'with', 'at', 'to', 'for', 'a'];
-var endings = ['th', 'te', 'ed', 'ly', 'ty', 'al', 'ing', 'ment', 'ness', 'tion', 'ous', 'e', 's'];
+var words = ['the', 'and', 'with', 'at', 'to', 'for', 'a', 'up'];
+var endings = ['th', 'te', 'ed', 'ly', 'ty', 'al', 'ing', 'ment', 'ness', 'icity', 'tion', 'ous', 't', 'e', 's'];
 function createAnswers(entry) {
     return entry.replace(/ *\([^)]*\) */g, "") //remove parentheses
         .replace(/ *\[[^\]]*]/g, "") //remove square brackets
@@ -673,8 +678,9 @@ function normalizeAnswer(answer) {
     return removeIgnoredEndings(answer); //remove ignored endings
 }
 function normalizeSentenceAnswer(answer) {
-    answer = answer.replace(/[ですま。　]/g, ""); //remove special chars
-    //TODO
+    //polite, verb endings, particles
+    answer = answer.replace(/[ですま、くぐぶつむうるぬ。よねか　]/g, "");
+    return answer;
 }
 function removeIgnoredWords(s) {
     words.forEach(function (w) { return s = s.replace(new RegExp(' ' + w, 'g'), ''); });
@@ -800,10 +806,11 @@ var StatusService = (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        console.log(this.getCurrentLocalTimeAsUTC());
+                        //console.log(this.getCurrentLocalTimeAsUTC())
                         _a = this;
                         return [4 /*yield*/, this.apiService.getNewQuestions(this.username, setIndex, dirIndex)];
                     case 1:
+                        //console.log(this.getCurrentLocalTimeAsUTC())
                         _a.currentStudy = _b.sent();
                         this.startStudy();
                         return [2 /*return*/];
@@ -842,6 +849,8 @@ var StatusService = (function () {
             return __generator(this, function (_a) {
                 this.answered = false;
                 this.currentQuestion = this.qsStillIncorrect[0];
+                this.currentQuestion.options = this.currentQuestion.options ?
+                    __WEBPACK_IMPORTED_MODULE_0_lodash__["shuffle"](this.currentQuestion.options) : undefined;
                 this.isAudioQuestion = this.currentQuestion.question.indexOf('.mp3') > 0;
                 this.showInfo = !this.isAudioQuestion
                     && !(this.currentStudy.set == 1 && this.currentStudy.direction == 1);
@@ -868,11 +877,12 @@ var StatusService = (function () {
             //check if correct
             var correct = void 0;
             if (this.currentStudy.set === 2) {
-                //this.currentQuestion.answers[0] === this.
+                correct = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["a" /* normalizeSentenceAnswer */])(this.currentQuestion.answers[0])
+                    === __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["a" /* normalizeSentenceAnswer */])(answer);
             }
             else {
                 //console.log(normalizeSingleAnswer(answer), this.currentQuestion.answers)
-                correct = this.currentQuestion.answers.indexOf(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["a" /* normalizeSingleAnswer */])(answer)) >= 0;
+                correct = this.currentQuestion.answers.indexOf(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["b" /* normalizeSingleAnswer */])(answer)) >= 0;
             }
             this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["drop"](this.qsStillIncorrect);
             if (!correct) {
@@ -917,7 +927,7 @@ var StatusService = (function () {
 /***/ "../../../../../src/app/study.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
+module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input *ngIf=\"!status.currentQuestion.options\" autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div>\n    <span *ngFor=\"let opt of status.currentQuestion.options; let o = index\">\n      <button (click)=\"setAnswer(opt)\"\n          [ngStyle]=\"{'font-size': '200%', 'background-color': opt === answer ? bgColor: 'white'}\">\n        {{opt}}\n      </button>\n      <br *ngIf=\"o % 5 == 4\">\n    </span>\n  </div>\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
 
 /***/ }),
 
@@ -959,7 +969,10 @@ var StudyComponent = (function () {
             this.router.navigate(['/main']);
         }
     };
-    StudyComponent.prototype.check = function () {
+    StudyComponent.prototype.setAnswer = function (answer) {
+        this.answer = answer;
+    };
+    StudyComponent.prototype.check = function (answer) {
         var _this = this;
         //only check once!
         if (!this.checked) {
@@ -1002,7 +1015,7 @@ var StudyComponent = (function () {
 /***/ "../../../../../src/app/view.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div (window:keydown.enter)=\"next()\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <br>\n  <h2>{{status.currentQuestion.fullAnswers}}</h2>\n  <br>\n  <h3 *ngIf=\"status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h3>\n  <p *ngIf=\"status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n  <br>\n  <p>{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <h4>You answered: {{status.currentAnswerString}}</h4>\n</div>"
+module.exports = "<div (window:keydown.enter)=\"next()\" (mousedown)=\"next()\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <br>\n  <h2>{{status.currentQuestion.fullAnswers}}</h2>\n  <br>\n  <h3 *ngIf=\"status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h3>\n  <p *ngIf=\"status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n  <br>\n  <p>{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <h4>You answered: {{status.currentAnswerString}}</h4>\n</div>"
 
 /***/ }),
 
