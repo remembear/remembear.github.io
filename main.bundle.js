@@ -456,7 +456,7 @@ var LoginComponent = (function () {
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\">\n    <svg height=\"70\" width=\"500\">\n      <polyline [attr.points]=\"status.pointsGraph\"\n        style=\"fill:none;stroke:black;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.studiesGraph\"\n        style=\"fill:none;stroke:blue;stroke-width:1\" />/>\n      <polyline [attr.points]=\"status.timeGraph\"\n        style=\"fill:none;stroke:red;stroke-width:1\" />/>\n    </svg>\n  </div>\n  <p>daily points: {{status.status.pointsPerDay.slice(-7)}}<br>\n  <span [ngStyle]=\"{'color':'blue'}\">daily studies: {{status.status.studiesPerDay.slice(-7)}}</span><br>\n  <span [ngStyle]=\"{'color':'red'}\">daily thinking: {{status.status.thinkingPerDay.slice(-7)}}</span><br>\n  latest points: {{status.status.latestPoints}}</p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\" (click)=\"swapGraphs()\">\n    <svg height=\"100\" width=\"500\">\n      <polyline *ngFor=\"let g of status.graphs[graphIndex]\"\n        [attr.points]=\"g.pointString\" [ngStyle]=\"g.style\" />/>\n    </svg>\n  </div>\n  <p>\n    <span *ngFor=\"let g of status.graphs[graphIndex]\" [ngStyle]=\"{'color':g.color}\">\n      {{g.name + \": \" + g.values.slice(-7).join(\" \")}}<br></span>\n    latest points: {{status.status.latestPoints}}\n  </p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -522,6 +522,7 @@ var MainComponent = (function () {
         this.status = status;
         this.router = router;
         this.sets = __WEBPACK_IMPORTED_MODULE_3__shared_consts__["a" /* SETS */];
+        this.graphIndex = 0;
     }
     MainComponent.prototype.new = function (setIndex, dirIndex) {
         return __awaiter(this, void 0, void 0, function () {
@@ -548,6 +549,9 @@ var MainComponent = (function () {
                 }
             });
         });
+    };
+    MainComponent.prototype.swapGraphs = function () {
+        this.graphIndex = (this.graphIndex + 1) % this.status.graphs.length;
     };
     MainComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
@@ -622,27 +626,27 @@ var SETS = [{
         ],
         info: ["Part of speech", "Word-type", "Vocab-RTK"],
         audio: VOC_AUD
-    }, {
-        name: "Sentences",
-        collection: "core10k",
-        idField: "2k1-Kanken Opt Sort",
-        directions: [
-            {
-                name: "Listening", numOptions: 10, question: SEN_AUD, answer: SEN_JAP,
-                extras: [SEN_ENG]
-            },
-            {
-                name: "Reading", numOptions: 10, question: SEN_JAP, answer: SEN_ENG,
-                extras: [SEN_JAP]
-            },
-            {
-                name: "Writing", numOptions: 10, question: SEN_ENG, answer: SEN_JAP,
-                extras: []
-            }
-        ],
-        info: [],
-        audio: SEN_AUD
-    }];
+    }]; /*, {
+  name: "Sentences",
+  collection: "core10k",
+  idField: "2k1-Kanken Opt Sort",
+  directions: [
+    {
+      name: "Listening", numOptions: 10, question: SEN_AUD, answer: SEN_JAP,
+      extras: [SEN_ENG]
+    },
+    {
+      name: "Reading", numOptions: 10, question: SEN_JAP, answer: SEN_ENG,
+      extras: [SEN_JAP]
+    },
+    {
+      name: "Writing", numOptions: 10, question: SEN_ENG, answer: SEN_JAP,
+      extras: []
+    }
+  ],
+  info: [],
+  audio: SEN_AUD
+}];*/
 //# sourceMappingURL=consts.js.map
 
 /***/ }),
@@ -660,14 +664,14 @@ var SETS = [{
 var words = ['the', 'and', 'with', 'at', 'to', 'for', 'a', 'up'];
 var endings = ['th', 'te', 'ed', 'ly', 'ty', 'al', 'ing', 'ment', 'ness', 'icity', 'tion', 'ous', 't', 'e', 's'];
 function createAnswers(entry) {
-    return entry.replace(/ *\([^)]*\) */g, "") //remove parentheses
+    return entry.replace(/ *\([^)]*\)*/g, "") //remove parentheses
         .replace(/ *\[[^\]]*]/g, "") //remove square brackets
         .replace(/;/g, ",") //semicolons to commas
         .split(',') //split alternatives
         .map(function (a) { return normalizeAnswer(a); });
 }
 function normalizeSingleAnswer(answer) {
-    answer = answer.replace(/ *\([^)]*\) */g, ""); //remove parentheses
+    answer = answer.replace(/ *\([^)]*\)*/g, ""); //remove parentheses
     return normalizeAnswer(answer);
 }
 function normalizeAnswer(answer) {
@@ -761,9 +765,7 @@ var StatusService = (function () {
         this.apiService = apiService;
         this.GRAPH_WIDTH = 500;
         this.GRAPH_HEIGHT = 100;
-        this.pointsGraph = "";
-        this.studiesGraph = "";
-        this.timeGraph = "";
+        this.graphs = [];
         this.username = this.authService.username;
         this.updateUserStatus();
     }
@@ -787,17 +789,40 @@ var StatusService = (function () {
         });
     };
     StatusService.prototype.updateGraphs = function () {
-        this.pointsGraph = this.toGraph(this.status.pointsPerDay);
-        this.studiesGraph = this.toGraph(this.status.studiesPerDay);
-        this.timeGraph = this.toGraph(this.status.thinkingPerDay);
-    };
-    StatusService.prototype.toGraph = function (values) {
         var _this = this;
+        var thinkingPerStudy = __WEBPACK_IMPORTED_MODULE_0_lodash__["zipWith"](this.status.thinkingPerDay, this.status.studiesPerDay, __WEBPACK_IMPORTED_MODULE_0_lodash__["divide"])
+            .map(function (v) { return __WEBPACK_IMPORTED_MODULE_0_lodash__["round"](v, 2); });
+        var types = [
+            { name: "studies", color: "blue", series: this.status.studiesPerDay },
+            { name: "new learned", color: "lightblue", series: this.status.newPerDay },
+            { name: "thinking", color: "red", series: this.status.thinkingPerDay },
+            { name: "points", color: "black", series: this.status.pointsPerDay }
+        ];
+        this.graphs.push(types.map(function (t) { return _this.toGraph(t, "daily "); }));
+        this.graphs.push(types.map(function (t) { return _this.toGraph(t, "weekly ", 7); }));
+        this.graphs.push(types.map(function (t) { return _this.toGraph(t, "monthly ", 30); }));
+    };
+    StatusService.prototype.toGraph = function (type, namePrefix, summarize) {
+        var _this = this;
+        var values = __WEBPACK_IMPORTED_MODULE_0_lodash__["clone"](type.series);
+        if (summarize) {
+            values.reverse();
+            values = __WEBPACK_IMPORTED_MODULE_0_lodash__["chunk"](values, summarize).map(function (c) { return __WEBPACK_IMPORTED_MODULE_0_lodash__["sum"](c); });
+            values.reverse();
+        }
         if (values.length > 1) {
             var norm_1 = this.GRAPH_HEIGHT / __WEBPACK_IMPORTED_MODULE_0_lodash__["max"](values);
             var interval_1 = this.GRAPH_WIDTH / (values.length - 1);
-            return values
-                .map(function (p, i) { return (i * interval_1) + "," + (_this.GRAPH_HEIGHT + 1 - (norm_1 * p)); }).join(" ");
+            var pointString = values
+                .map(function (p, i) { return (i * interval_1) + "," + (_this.GRAPH_HEIGHT + 1 - (norm_1 * p)); })
+                .join(" ");
+            return {
+                name: namePrefix + type.name,
+                values: values,
+                pointString: pointString,
+                color: type.color,
+                style: { 'fill': 'none', 'stroke': type.color, 'stroke-width': 1 }
+            };
         }
     };
     StatusService.prototype.startNewStudy = function (setIndex, dirIndex) {
@@ -875,14 +900,16 @@ var StatusService = (function () {
             var attempt = { answer: answer, duration: Date.now() - this.answerStartTime };
             this.currentAnswer.attempts.push(attempt);
             //check if correct
-            var correct = void 0;
-            if (this.currentStudy.set === 2) {
-                correct = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["a" /* normalizeSentenceAnswer */])(this.currentQuestion.answers[0])
-                    === __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["a" /* normalizeSentenceAnswer */])(answer);
-            }
-            else {
-                //console.log(normalizeSingleAnswer(answer), this.currentQuestion.answers)
-                correct = this.currentQuestion.answers.indexOf(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["b" /* normalizeSingleAnswer */])(answer)) >= 0;
+            var correct = false;
+            if (answer.length > 0) {
+                if (this.currentStudy.set === 2) {
+                    correct = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["a" /* normalizeSentenceAnswer */])(this.currentQuestion.answers[0])
+                        === __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["a" /* normalizeSentenceAnswer */])(answer);
+                }
+                else {
+                    //console.log(normalizeSingleAnswer(answer), this.currentQuestion.answers)
+                    correct = this.currentQuestion.answers.indexOf(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__shared_util__["b" /* normalizeSingleAnswer */])(answer)) >= 0;
+                }
             }
             this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["drop"](this.qsStillIncorrect);
             if (!correct) {
@@ -909,7 +936,9 @@ var StatusService = (function () {
     };
     StatusService.prototype.getCurrentLocalTimeAsUTC = function () {
         var date = new Date(Date.now());
-        date.setTime(date.getTime() - date.getTimezoneOffset() * 60 * 1000); // - 24*60*60*1000)
+        var offset = 0; //days
+        date.setTime(date.getTime() - date.getTimezoneOffset() * 60 * 1000 - 24 * offset * 60 * 60 * 1000);
+        //console.log("current offset:", offset, "days, time: ", new Date(date))
         return date;
     };
     StatusService = __decorate([
