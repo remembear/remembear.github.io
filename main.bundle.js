@@ -798,6 +798,7 @@ var StatusService = (function () {
             { name: "thinking", color: "red", series: this.status.thinkingPerDay },
             { name: "points", color: "black", series: this.status.pointsPerDay }
         ];
+        this.graphs = [];
         this.graphs.push(types.map(function (t) { return _this.toGraph(t, "daily "); }));
         this.graphs.push(types.map(function (t) { return _this.toGraph(t, "weekly ", 7); }));
         this.graphs.push(types.map(function (t) { return _this.toGraph(t, "monthly ", 30); }));
