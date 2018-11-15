@@ -811,7 +811,7 @@ var StatusService = (function () {
             values = __WEBPACK_IMPORTED_MODULE_0_lodash__["chunk"](values, summarize).map(function (c) { return __WEBPACK_IMPORTED_MODULE_0_lodash__["sum"](c); });
             values.reverse();
         }
-        if (values.length > 1) {
+        if (values.length > 0) {
             var norm_1 = this.GRAPH_HEIGHT / __WEBPACK_IMPORTED_MODULE_0_lodash__["max"](values);
             var interval_1 = this.GRAPH_WIDTH / (values.length - 1);
             var pointString = values
