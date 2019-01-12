@@ -13,117 +13,6 @@ webpackEmptyContext.id = "../../../../../src async recursive";
 
 /***/ }),
 
-/***/ "../../../../../src/app/api.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApiService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-var ApiService = (function () {
-    function ApiService() {
-        this.API_URL = "https://remembear-api.herokuapp.com/"; //"http://localhost:8060/";
-    }
-    ApiService.prototype.login = function (user) {
-        return this.getJsonFromApi('login', user)
-            .then(function (j) { return j['success']; });
-    };
-    ApiService.prototype.getUserStatus = function (username) {
-        return this.getJsonFromApi('status', { username: username });
-    };
-    ApiService.prototype.getNewQuestions = function (username, setIndex, dirIndex) {
-        return this.getJsonFromApi('new', { username: username, setIndex: setIndex, dirIndex: dirIndex });
-    };
-    ApiService.prototype.getReviewQuestions = function (username, setIndex, dirIndex) {
-        return this.getJsonFromApi('review', { username: username, setIndex: setIndex, dirIndex: dirIndex });
-    };
-    ApiService.prototype.sendResults = function (study, username) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.postJsonToApi('results', study, { username: username })];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    ApiService.prototype.postJsonToApi = function (path, json, params) {
-        path = this.addParams(path, params);
-        return fetch(this.API_URL + path, {
-            method: 'post',
-            body: JSON.stringify(json),
-            headers: { 'Content-Type': 'application/json' }
-        })
-            .then(function (r) { return r.text(); })
-            .then(function (t) { return JSON.parse(t); })
-            .catch(function (e) { return console.log(e); });
-    };
-    ApiService.prototype.getJsonFromApi = function (path, params) {
-        path = this.addParams(path, params);
-        return fetch(this.API_URL + path)
-            .then(function (r) { return r.text(); })
-            .then(function (t) { return JSON.parse(t); })
-            .catch(function (e) { return console.log(e); });
-    };
-    ApiService.prototype.addParams = function (path, params) {
-        if (params) {
-            var paramStrings = Array.from(Object.keys(params))
-                .map(function (k) { return k + "=" + encodeURIComponent(params[k]); });
-            path += '?' + paramStrings.join('&');
-        }
-        return path;
-    };
-    ApiService = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])()
-    ], ApiService);
-    return ApiService;
-}());
-
-//# sourceMappingURL=api.service.js.map
-
-/***/ }),
-
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
@@ -174,10 +63,10 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__study_component__ = __webpack_require__("../../../../../src/app/study.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__view_component__ = __webpack_require__("../../../../../src/app/view.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__autofocus_directive__ = __webpack_require__("../../../../../src/app/autofocus.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__api_service__ = __webpack_require__("../../../../../src/app/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__auth_guard_service__ = __webpack_require__("../../../../../src/app/auth-guard.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__auth_service__ = __webpack_require__("../../../../../src/app/auth.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__status_service__ = __webpack_require__("../../../../../src/app/status.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_auth_guard_service__ = __webpack_require__("../../../../../src/app/services/auth-guard.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_status_service__ = __webpack_require__("../../../../../src/app/services/status.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -200,9 +89,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 var appRoutes = [
-    { path: 'main', component: __WEBPACK_IMPORTED_MODULE_6__main_component__["a" /* MainComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_11__auth_guard_service__["a" /* AuthGuardService */]] },
-    { path: 'study', component: __WEBPACK_IMPORTED_MODULE_7__study_component__["a" /* StudyComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_11__auth_guard_service__["a" /* AuthGuardService */]] },
-    { path: 'view', component: __WEBPACK_IMPORTED_MODULE_8__view_component__["a" /* ViewComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_11__auth_guard_service__["a" /* AuthGuardService */]] },
+    { path: 'main', component: __WEBPACK_IMPORTED_MODULE_6__main_component__["a" /* MainComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_11__services_auth_guard_service__["a" /* AuthGuardService */]] },
+    { path: 'study', component: __WEBPACK_IMPORTED_MODULE_7__study_component__["a" /* StudyComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_11__services_auth_guard_service__["a" /* AuthGuardService */]] },
+    { path: 'view', component: __WEBPACK_IMPORTED_MODULE_8__view_component__["a" /* ViewComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_11__services_auth_guard_service__["a" /* AuthGuardService */]] },
     { path: 'login', component: __WEBPACK_IMPORTED_MODULE_5__login_component__["a" /* LoginComponent */] },
     { path: '', redirectTo: '/main', pathMatch: 'full' },
     { path: '**', component: __WEBPACK_IMPORTED_MODULE_5__login_component__["a" /* LoginComponent */] }
@@ -225,7 +114,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */].forRoot(appRoutes)
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_10__api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_11__auth_guard_service__["a" /* AuthGuardService */], __WEBPACK_IMPORTED_MODULE_12__auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_13__status_service__["a" /* StatusService */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_10__services_api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_11__services_auth_guard_service__["a" /* AuthGuardService */], __WEBPACK_IMPORTED_MODULE_12__services_auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_13__services_status_service__["a" /* StatusService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -233,114 +122,6 @@ var AppModule = (function () {
 }());
 
 //# sourceMappingURL=app.module.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/auth-guard.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_service__ = __webpack_require__("../../../../../src/app/auth.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthGuardService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var AuthGuardService = (function () {
-    function AuthGuardService(authService, router) {
-        this.authService = authService;
-        this.router = router;
-    }
-    AuthGuardService.prototype.canActivate = function (route, state) {
-        return this.checkLogin(state.url);
-    };
-    AuthGuardService.prototype.checkLogin = function (url) {
-        if (this.authService.isLoggedIn) {
-            return true;
-        }
-        // Store the attempted URL for redirecting
-        this.authService.redirectUrl = url;
-        // Navigate to the login page with extras
-        this.router.navigate(['/login']);
-        return false;
-    };
-    AuthGuardService = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
-    ], AuthGuardService);
-    return AuthGuardService;
-    var _a, _b;
-}());
-
-//# sourceMappingURL=auth-guard.service.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/auth.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromPromise__ = __webpack_require__("../../../../rxjs/add/observable/fromPromise.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromPromise__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_do__ = __webpack_require__("../../../../rxjs/add/operator/do.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_do__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__api_service__ = __webpack_require__("../../../../../src/app/api.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var AuthService = (function () {
-    function AuthService(apiService) {
-        this.apiService = apiService;
-        this.isLoggedIn = false;
-    }
-    AuthService.prototype.login = function (user) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["Observable"].fromPromise(this.apiService.login(user))
-            .do(function (success) {
-            if (success) {
-                _this.isLoggedIn = true;
-                _this.username = user.username;
-            }
-        });
-    };
-    AuthService.prototype.logout = function () {
-        this.isLoggedIn = false;
-        this.username = undefined;
-    };
-    AuthService = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */]) === "function" && _a || Object])
-    ], AuthService);
-    return AuthService;
-    var _a;
-}());
-
-//# sourceMappingURL=auth.service.js.map
 
 /***/ }),
 
@@ -395,7 +176,7 @@ module.exports = "<div style=\"background-image: url('../assets/panda.png'); bac
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_service__ = __webpack_require__("../../../../../src/app/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -443,7 +224,7 @@ var LoginComponent = (function () {
             template: __webpack_require__("../../../../../src/app/login.component.html"),
             styles: [".container{\n    min-height:1000;\n  }"]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
     ], LoginComponent);
     return LoginComponent;
     var _a, _b;
@@ -466,7 +247,7 @@ module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{st
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__status_service__ = __webpack_require__("../../../../../src/app/status.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_status_service__ = __webpack_require__("../../../../../src/app/services/status.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_consts__ = __webpack_require__("../../../../../src/app/shared/consts.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MainComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -557,7 +338,7 @@ var MainComponent = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
             template: __webpack_require__("../../../../../src/app/main.component.html")
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
     ], MainComponent);
     return MainComponent;
     var _a, _b;
@@ -567,139 +348,236 @@ var MainComponent = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/shared/consts.ts":
+/***/ "../../../../../src/app/services/api.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export AUDIO_LOCATION */
-/* unused harmony export STUDY_TYPE */
-/* unused harmony export KAN_KAN */
-/* unused harmony export KAN_ENG */
-/* unused harmony export VOC_JAP */
-/* unused harmony export VOC_KNA */
-/* unused harmony export VOC_ENG */
-/* unused harmony export VOC_AUD */
-/* unused harmony export SEN_JAP */
-/* unused harmony export SEN_ENG */
-/* unused harmony export SEN_FUR */
-/* unused harmony export SEN_AUD */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SETS; });
-var AUDIO_LOCATION = "https://remembear-api.herokuapp.com/"; //'http://localhost:8060/';
-var STUDY_TYPE;
-(function (STUDY_TYPE) {
-    STUDY_TYPE["NEW"] = "new";
-    STUDY_TYPE["REVIEW"] = "review";
-})(STUDY_TYPE || (STUDY_TYPE = {}));
-var KAN_KAN = "Kanji";
-var KAN_ENG = "English Meaning";
-var VOC_JAP = "Vocab-japan";
-var VOC_KNA = "Vocab-kana";
-var VOC_ENG = "Vocab-translation";
-var VOC_AUD = "Vocab-audio";
-var SEN_JAP = "Sentence-japanese";
-var SEN_ENG = "Sentence-translation";
-var SEN_FUR = "Sentence-Furigana";
-var SEN_AUD = "Sentence-audio";
-var SETS = [{
-        name: "Kanji",
-        collection: "kanji",
-        idField: "2k1KO Index",
-        directions: [
-            {
-                name: "Reading", question: KAN_KAN, answer: KAN_ENG,
-                extras: ["stroke count", "Kana", "Primitive look-up data."]
-            },
-            {
-                name: "Writing", numOptions: 25, question: KAN_ENG, answer: KAN_KAN,
-                extras: ["stroke count", "Kana", "Primitive look-up data."]
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApiService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
             }
-        ],
-        info: []
-    }, {
-        name: "Vocab",
-        collection: "core10k",
-        idField: "2k1-Kanken Opt Sort",
-        directions: [
-            { name: "Writing", question: VOC_ENG, answer: VOC_JAP, extras: [VOC_KNA] },
-            { name: "Reading", question: VOC_JAP, answer: VOC_KNA, extras: [VOC_ENG] },
-            { name: "Listening", question: VOC_AUD, answer: VOC_ENG, extras: [VOC_JAP] }
-        ],
-        info: ["Part of speech", "Word-type", "Vocab-RTK"],
-        audio: VOC_AUD
-    }]; /*, {
-  name: "Sentences",
-  collection: "core10k",
-  idField: "2k1-Kanken Opt Sort",
-  directions: [
-    {
-      name: "Listening", numOptions: 10, question: SEN_AUD, answer: SEN_JAP,
-      extras: [SEN_ENG]
-    },
-    {
-      name: "Reading", numOptions: 10, question: SEN_JAP, answer: SEN_ENG,
-      extras: [SEN_JAP]
-    },
-    {
-      name: "Writing", numOptions: 10, question: SEN_ENG, answer: SEN_JAP,
-      extras: []
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
-  ],
-  info: [],
-  audio: SEN_AUD
-}];*/
-//# sourceMappingURL=consts.js.map
+};
+
+var ApiService = (function () {
+    function ApiService() {
+        this.API_URL = "https://remembear-api.herokuapp.com/"; //"http://localhost:8060/";
+    }
+    ApiService.prototype.login = function (user) {
+        return this.getJsonFromApi('login', user)
+            .then(function (j) { return j['success']; });
+    };
+    ApiService.prototype.getUserStatus = function (username) {
+        return this.getJsonFromApi('status', { username: username });
+    };
+    ApiService.prototype.getNewQuestions = function (username, setIndex, dirIndex) {
+        return this.getJsonFromApi('new', { username: username, setIndex: setIndex, dirIndex: dirIndex });
+    };
+    ApiService.prototype.getReviewQuestions = function (username, setIndex, dirIndex) {
+        return this.getJsonFromApi('review', { username: username, setIndex: setIndex, dirIndex: dirIndex });
+    };
+    ApiService.prototype.editAnswer = function (edit, username) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.postJsonToApi('edit', edit, { username: username })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ApiService.prototype.sendResults = function (study, username) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.postJsonToApi('results', study, { username: username })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ApiService.prototype.postJsonToApi = function (path, json, params) {
+        path = this.addParams(path, params);
+        return fetch(this.API_URL + path, {
+            method: 'post',
+            body: JSON.stringify(json),
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(function (r) { return r.text(); })
+            .then(function (t) { return JSON.parse(t); })
+            .catch(function (e) { return console.log(e); });
+    };
+    ApiService.prototype.getJsonFromApi = function (path, params) {
+        path = this.addParams(path, params);
+        return fetch(this.API_URL + path)
+            .then(function (r) { return r.text(); })
+            .then(function (t) { return JSON.parse(t); })
+            .catch(function (e) { return console.log(e); });
+    };
+    ApiService.prototype.addParams = function (path, params) {
+        if (params) {
+            var paramStrings = Array.from(Object.keys(params))
+                .map(function (k) { return k + "=" + encodeURIComponent(params[k]); });
+            path += '?' + paramStrings.join('&');
+        }
+        return path;
+    };
+    ApiService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])()
+    ], ApiService);
+    return ApiService;
+}());
+
+//# sourceMappingURL=api.service.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/shared/util.ts":
+/***/ "../../../../../src/app/services/auth-guard.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* unused harmony export createAnswers */
-/* harmony export (immutable) */ __webpack_exports__["b"] = normalizeSingleAnswer;
-/* harmony export (immutable) */ __webpack_exports__["a"] = normalizeSentenceAnswer;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthGuardService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var words = ['the', 'and', 'with', 'at', 'to', 'for', 'a', 'up'];
-var endings = ['th', 'te', 'ed', 'ly', 'ty', 'al', 'ing', 'ment', 'ness', 'icity', 'tion', 'ous', 't', 'e', 's'];
-function createAnswers(entry) {
-    return entry.replace(/ *\([^)]*\)*/g, "") //remove parentheses
-        .replace(/ *\[[^\]]*]/g, "") //remove square brackets
-        .replace(/;/g, ",") //semicolons to commas
-        .split(',') //split alternatives
-        .map(function (a) { return normalizeAnswer(a); });
-}
-function normalizeSingleAnswer(answer) {
-    answer = answer.replace(/ *\([^)]*\)*/g, ""); //remove parentheses
-    return normalizeAnswer(answer);
-}
-function normalizeAnswer(answer) {
-    answer = __WEBPACK_IMPORTED_MODULE_0_lodash__["trim"](__WEBPACK_IMPORTED_MODULE_0_lodash__["toLower"](answer)); //lower case and trim before removing words
-    answer = removeIgnoredWords(answer); //replace all ignored words
-    answer = answer.replace(/[\/&-.,'* ]/g, ""); //remove eng special chars
-    answer = answer.replace(/[。　]/g, ""); //remove jap special chars
-    return removeIgnoredEndings(answer); //remove ignored endings
-}
-function normalizeSentenceAnswer(answer) {
-    //polite, verb endings, particles
-    answer = answer.replace(/[ですま、くぐぶつむうるぬ。よねか　]/g, "");
-    return answer;
-}
-function removeIgnoredWords(s) {
-    words.forEach(function (w) { return s = s.replace(new RegExp(' ' + w, 'g'), ''); });
-    words.forEach(function (w) { return s = s.replace(new RegExp(w + ' ', 'g'), ''); });
-    return s;
-}
-function removeIgnoredEndings(s) {
-    endings.forEach(function (w) { return s = s.replace(new RegExp(w + '$'), ''); });
-    return s;
-}
-//# sourceMappingURL=util.js.map
+
+
+var AuthGuardService = (function () {
+    function AuthGuardService(authService, router) {
+        this.authService = authService;
+        this.router = router;
+    }
+    AuthGuardService.prototype.canActivate = function (route, state) {
+        return this.checkLogin(state.url);
+    };
+    AuthGuardService.prototype.checkLogin = function (url) {
+        if (this.authService.isLoggedIn) {
+            return true;
+        }
+        // Store the attempted URL for redirecting
+        this.authService.redirectUrl = url;
+        // Navigate to the login page with extras
+        this.router.navigate(['/login']);
+        return false;
+    };
+    AuthGuardService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_service__["a" /* AuthService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+    ], AuthGuardService);
+    return AuthGuardService;
+    var _a, _b;
+}());
+
+//# sourceMappingURL=auth-guard.service.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/status.service.ts":
+/***/ "../../../../../src/app/services/auth.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromPromise__ = __webpack_require__("../../../../rxjs/add/observable/fromPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_observable_fromPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_do__ = __webpack_require__("../../../../rxjs/add/operator/do.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_do__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var AuthService = (function () {
+    function AuthService(apiService) {
+        this.apiService = apiService;
+        this.isLoggedIn = false;
+    }
+    AuthService.prototype.login = function (user) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["Observable"].fromPromise(this.apiService.login(user))
+            .do(function (success) {
+            if (success) {
+                _this.isLoggedIn = true;
+                _this.username = user.username;
+            }
+        });
+    };
+    AuthService.prototype.logout = function () {
+        this.isLoggedIn = false;
+        this.username = undefined;
+    };
+    AuthService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__api_service__["a" /* ApiService */]) === "function" && _a || Object])
+    ], AuthService);
+    return AuthService;
+    var _a;
+}());
+
+//# sourceMappingURL=auth.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/status.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -707,8 +585,8 @@ function removeIgnoredEndings(s) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_util__ = __webpack_require__("../../../../../src/app/shared/util.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__auth_service__ = __webpack_require__("../../../../../src/app/auth.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__api_service__ = __webpack_require__("../../../../../src/app/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__api_service__ = __webpack_require__("../../../../../src/app/services/api.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StatusService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -890,7 +768,6 @@ var StatusService = (function () {
         });
     };
     StatusService.prototype.checkAnswer = function (answer) {
-        var _this = this;
         if (!this.answered) {
             this.answered = true;
             if (!this.isAudioQuestion) {
@@ -916,15 +793,29 @@ var StatusService = (function () {
             if (!correct) {
                 this.qsStillIncorrect.push(this.currentQuestion);
             }
-            if (this.qsStillIncorrect.length === 0) {
-                this.done = true;
-                this.currentStudy.endTime = this.getCurrentLocalTimeAsUTC();
-                this.currentStudy.answers = Array.from(this.answers.values());
-                this.apiService.sendResults(this.currentStudy, this.authService.username)
-                    .then(function (s) { return _this.updateUserStatus(s); });
-                //.then(() => this.done = true);
-            }
+            this.endStudyIfDone();
             return correct;
+        }
+    };
+    StatusService.prototype.shouldHaveBeenAccepted = function (answer) {
+        this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["dropRight"](this.qsStillIncorrect);
+        this.endStudyIfDone();
+        this.apiService.editAnswer({
+            set: this.currentStudy.set,
+            direction: this.currentStudy.direction,
+            wordId: this.currentQuestion.wordId,
+            answer: answer
+        }, this.username);
+    };
+    StatusService.prototype.endStudyIfDone = function () {
+        var _this = this;
+        if (this.qsStillIncorrect.length === 0) {
+            this.done = true;
+            this.currentStudy.endTime = this.getCurrentLocalTimeAsUTC();
+            this.currentStudy.answers = Array.from(this.answers.values());
+            this.apiService.sendResults(this.currentStudy, this.authService.username)
+                .then(function (s) { return _this.updateUserStatus(s); });
+            //.then(() => this.done = true);
         }
     };
     StatusService.prototype.playCurrentWordAudio = function () {
@@ -954,10 +845,142 @@ var StatusService = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/consts.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export AUDIO_LOCATION */
+/* unused harmony export STUDY_TYPE */
+/* unused harmony export KAN_KAN */
+/* unused harmony export KAN_ENG */
+/* unused harmony export VOC_JAP */
+/* unused harmony export VOC_KNA */
+/* unused harmony export VOC_ENG */
+/* unused harmony export VOC_AUD */
+/* unused harmony export SEN_JAP */
+/* unused harmony export SEN_ENG */
+/* unused harmony export SEN_FUR */
+/* unused harmony export SEN_AUD */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SETS; });
+var AUDIO_LOCATION = "https://remembear-api.herokuapp.com/"; //'http://localhost:8060/';
+var STUDY_TYPE;
+(function (STUDY_TYPE) {
+    STUDY_TYPE["NEW"] = "new";
+    STUDY_TYPE["REVIEW"] = "review";
+})(STUDY_TYPE || (STUDY_TYPE = {}));
+var KAN_KAN = "Kanji";
+var KAN_ENG = "English Meaning";
+var VOC_JAP = "Vocab-japan";
+var VOC_KNA = "Vocab-kana";
+var VOC_ENG = "Vocab-translation";
+var VOC_AUD = "Vocab-audio";
+var SEN_JAP = "Sentence-japanese";
+var SEN_ENG = "Sentence-translation";
+var SEN_FUR = "Sentence-Furigana";
+var SEN_AUD = "Sentence-audio";
+var SETS = [{
+        name: "Kanji",
+        collection: "kanji",
+        idField: "2k1KO Index",
+        directions: [
+            {
+                name: "Reading", question: KAN_KAN, answer: KAN_ENG,
+                extras: ["stroke count", "Kana", "Primitive look-up data."]
+            },
+            {
+                name: "Writing", numOptions: 25, question: KAN_ENG, answer: KAN_KAN,
+                extras: ["stroke count", "Kana", "Primitive look-up data."]
+            }
+        ],
+        info: []
+    }, {
+        name: "Vocab",
+        collection: "core10k",
+        idField: "2k1-Kanken Opt Sort",
+        directions: [
+            { name: "Writing", question: VOC_ENG, answer: VOC_JAP, extras: [VOC_KNA] },
+            { name: "Reading", question: VOC_JAP, answer: VOC_KNA, extras: [VOC_ENG] },
+            { name: "Listening", question: VOC_AUD, answer: VOC_ENG, extras: [VOC_JAP] }
+        ],
+        info: ["Part of speech", "Word-type", "Vocab-RTK"],
+        audio: VOC_AUD
+    }]; /*, {
+  name: "Sentences",
+  collection: "core10k",
+  idField: "2k1-Kanken Opt Sort",
+  directions: [
+    {
+      name: "Listening", numOptions: 10, question: SEN_AUD, answer: SEN_JAP,
+      extras: [SEN_ENG]
+    },
+    {
+      name: "Reading", numOptions: 10, question: SEN_JAP, answer: SEN_ENG,
+      extras: [SEN_JAP]
+    },
+    {
+      name: "Writing", numOptions: 10, question: SEN_ENG, answer: SEN_JAP,
+      extras: []
+    }
+  ],
+  info: [],
+  audio: SEN_AUD
+}];*/
+//# sourceMappingURL=consts.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/util.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+/* unused harmony export createAnswers */
+/* harmony export (immutable) */ __webpack_exports__["b"] = normalizeSingleAnswer;
+/* harmony export (immutable) */ __webpack_exports__["a"] = normalizeSentenceAnswer;
+
+var words = ['the', 'and', 'with', 'at', 'to', 'for', 'a', 'up'];
+var endings = ['th', 'te', 'ed', 'ly', 'ty', 'al', 'ing', 'ment', 'ness', 'icity', 'tion', 'ous', 't', 'e', 's'];
+function createAnswers(entry) {
+    return entry.replace(/ *\([^)]*\)*/g, "") //remove parentheses
+        .replace(/ *\[[^\]]*]/g, "") //remove square brackets
+        .replace(/;/g, ",") //semicolons to commas
+        .split(',') //split alternatives
+        .map(function (a) { return normalizeAnswer(a); });
+}
+function normalizeSingleAnswer(answer) {
+    answer = answer.replace(/ *\([^)]*\)*/g, ""); //remove parentheses
+    return normalizeAnswer(answer);
+}
+function normalizeAnswer(answer) {
+    answer = __WEBPACK_IMPORTED_MODULE_0_lodash__["trim"](__WEBPACK_IMPORTED_MODULE_0_lodash__["toLower"](answer)); //lower case and trim before removing words
+    answer = removeIgnoredWords(answer); //replace all ignored words
+    answer = answer.replace(/[\/&-.,'* ]/g, ""); //remove eng special chars
+    answer = answer.replace(/[。　]/g, ""); //remove jap special chars
+    return removeIgnoredEndings(answer); //remove ignored endings
+}
+function normalizeSentenceAnswer(answer) {
+    //polite, verb endings, particles
+    answer = answer.replace(/[ですま、くぐぶつむうるぬ。よねか　]/g, "");
+    return answer;
+}
+function removeIgnoredWords(s) {
+    words.forEach(function (w) { return s = s.replace(new RegExp(' ' + w, 'g'), ''); });
+    words.forEach(function (w) { return s = s.replace(new RegExp(w + ' ', 'g'), ''); });
+    return s;
+}
+function removeIgnoredEndings(s) {
+    endings.forEach(function (w) { return s = s.replace(new RegExp(w + '$'), ''); });
+    return s;
+}
+//# sourceMappingURL=util.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/study.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input *ngIf=\"!status.currentQuestion.options\" autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div>\n    <span *ngFor=\"let opt of status.currentQuestion.options; let o = index\">\n      <button (click)=\"setAnswer(opt)\"\n          [ngStyle]=\"{'font-size': '200%', 'background-color': opt === answer ? bgColor: 'white'}\">\n        {{opt}}\n      </button>\n      <br *ngIf=\"o % 5 == 4\">\n    </span>\n  </div>\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
+module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input *ngIf=\"!status.currentQuestion.options\" autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div>\n    <span *ngFor=\"let opt of status.currentQuestion.options; let o = index\">\n      <button (click)=\"setAnswer(opt)\"\n          [ngStyle]=\"{'font-size': '200%', 'background-color': opt === answer ? bgColor: 'white'}\">\n        {{opt}}\n      </button>\n      <br *ngIf=\"o % 5 == 4\">\n    </span>\n  </div>\n  <br>\n  <button type=\"button\" *ngIf=\"status.answered && !this.correct && !status.currentQuestion.options\"\n      (click)=\"shouldHaveBeenAccepted()\">\n    Should have been accepted!\n  </button>\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
 
 /***/ }),
 
@@ -967,7 +990,7 @@ module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__status_service__ = __webpack_require__("../../../../../src/app/status.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_status_service__ = __webpack_require__("../../../../../src/app/services/status.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StudyComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1007,18 +1030,10 @@ var StudyComponent = (function () {
         //only check once!
         if (!this.checked) {
             this.checked = true;
-            this.correct = this.status.checkAnswer(this.answer);
-            if (this.correct) {
-                this.bgColor = 'PaleGreen';
-                this.timeout = setTimeout(this.next.bind(this), this.DELAY);
-            }
-            else {
-                this.bgColor = 'LightCoral';
-                this.timeout = setTimeout(function () { return _this.router.navigate(['/view']); }, this.DELAY);
-            }
+            this.setCorrect(this.status.checkAnswer(this.answer));
         }
         else if (this.checked) {
-            //shortcut
+            //accelerate
             clearTimeout(this.timeout);
             if (this.correct) {
                 this.next();
@@ -1028,11 +1043,29 @@ var StudyComponent = (function () {
             }
         }
     };
+    StudyComponent.prototype.shouldHaveBeenAccepted = function () {
+        this.setCorrect(true);
+        this.status.shouldHaveBeenAccepted(this.answer);
+    };
+    StudyComponent.prototype.setCorrect = function (correct) {
+        var _this = this;
+        if (this.timeout)
+            clearTimeout(this.timeout);
+        this.correct = correct;
+        if (this.correct) {
+            this.bgColor = 'PaleGreen';
+            this.timeout = setTimeout(this.next.bind(this), this.DELAY);
+        }
+        else {
+            this.bgColor = 'LightCoral';
+            this.timeout = setTimeout(function () { return _this.router.navigate(['/view']); }, this.DELAY);
+        }
+    };
     StudyComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
             template: __webpack_require__("../../../../../src/app/study.component.html")
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
     ], StudyComponent);
     return StudyComponent;
     var _a, _b;
@@ -1055,7 +1088,7 @@ module.exports = "<div (window:keydown.enter)=\"next()\" (mousedown)=\"next()\">
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__status_service__ = __webpack_require__("../../../../../src/app/status.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_status_service__ = __webpack_require__("../../../../../src/app/services/status.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ViewComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1082,7 +1115,7 @@ var ViewComponent = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
             template: __webpack_require__("../../../../../src/app/view.component.html")
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_status_service__["a" /* StatusService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_status_service__["a" /* StatusService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
     ], ViewComponent);
     return ViewComponent;
     var _a, _b;
