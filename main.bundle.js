@@ -797,14 +797,14 @@ var StatusService = (function () {
             return correct;
         }
     };
-    StatusService.prototype.shouldHaveBeenAccepted = function (answer) {
+    StatusService.prototype.shouldHaveBeenAccepted = function () {
         this.qsStillIncorrect = __WEBPACK_IMPORTED_MODULE_0_lodash__["dropRight"](this.qsStillIncorrect);
         this.endStudyIfDone();
         this.apiService.editAnswer({
             set: this.currentStudy.set,
             direction: this.currentStudy.direction,
             wordId: this.currentQuestion.wordId,
-            answer: answer
+            answer: this.currentAnswerString
         }, this.username);
     };
     StatusService.prototype.endStudyIfDone = function () {
@@ -980,7 +980,7 @@ function removeIgnoredEndings(s) {
 /***/ "../../../../../src/app/study.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input *ngIf=\"!status.currentQuestion.options\" autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div>\n    <span *ngFor=\"let opt of status.currentQuestion.options; let o = index\">\n      <button (click)=\"setAnswer(opt)\"\n          [ngStyle]=\"{'font-size': '200%', 'background-color': opt === answer ? bgColor: 'white'}\">\n        {{opt}}\n      </button>\n      <br *ngIf=\"o % 5 == 4\">\n    </span>\n  </div>\n  <br>\n  <button type=\"button\" *ngIf=\"status.answered && !this.correct && !status.currentQuestion.options\"\n      (click)=\"shouldHaveBeenAccepted()\">\n    Should have been accepted!\n  </button>\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
+module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input *ngIf=\"!status.currentQuestion.options\" autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div>\n    <span *ngFor=\"let opt of status.currentQuestion.options; let o = index\">\n      <button (click)=\"setAnswer(opt)\"\n          [ngStyle]=\"{'font-size': '200%', 'background-color': opt === answer ? bgColor: 'white'}\">\n        {{opt}}\n      </button>\n      <br *ngIf=\"o % 5 == 4\">\n    </span>\n  </div>\n  <br>\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
 
 /***/ }),
 
@@ -1030,7 +1030,15 @@ var StudyComponent = (function () {
         //only check once!
         if (!this.checked) {
             this.checked = true;
-            this.setCorrect(this.status.checkAnswer(this.answer));
+            this.correct = this.status.checkAnswer(this.answer);
+            if (this.correct) {
+                this.bgColor = 'PaleGreen';
+                this.timeout = setTimeout(this.next.bind(this), this.DELAY);
+            }
+            else {
+                this.bgColor = 'LightCoral';
+                this.timeout = setTimeout(function () { return _this.router.navigate(['/view']); }, this.DELAY);
+            }
         }
         else if (this.checked) {
             //accelerate
@@ -1041,24 +1049,6 @@ var StudyComponent = (function () {
             else {
                 setTimeout(function () { return _this.router.navigate(['/view']); }, 50);
             }
-        }
-    };
-    StudyComponent.prototype.shouldHaveBeenAccepted = function () {
-        this.setCorrect(true);
-        this.status.shouldHaveBeenAccepted(this.answer);
-    };
-    StudyComponent.prototype.setCorrect = function (correct) {
-        var _this = this;
-        if (this.timeout)
-            clearTimeout(this.timeout);
-        this.correct = correct;
-        if (this.correct) {
-            this.bgColor = 'PaleGreen';
-            this.timeout = setTimeout(this.next.bind(this), this.DELAY);
-        }
-        else {
-            this.bgColor = 'LightCoral';
-            this.timeout = setTimeout(function () { return _this.router.navigate(['/view']); }, this.DELAY);
         }
     };
     StudyComponent = __decorate([
@@ -1078,7 +1068,7 @@ var StudyComponent = (function () {
 /***/ "../../../../../src/app/view.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div (window:keydown.enter)=\"next()\" (mousedown)=\"next()\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <br>\n  <h2>{{status.currentQuestion.fullAnswers}}</h2>\n  <br>\n  <h3 *ngIf=\"status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h3>\n  <p *ngIf=\"status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n  <br>\n  <p>{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <h4>You answered: {{status.currentAnswerString}}</h4>\n</div>"
+module.exports = "<div (window:keydown.enter)=\"next()\" (mouseup)=\"next()\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <br>\n  <h2>{{status.currentQuestion.fullAnswers}}</h2>\n  <br>\n  <h3 *ngIf=\"status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h3>\n  <p *ngIf=\"status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n  <br>\n  <p>{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <h4>You answered: {{status.currentAnswerString}}</h4>\n  <br>\n  <button type=\"button\" (click)=\"status.shouldHaveBeenAccepted()\">\n    Should have been accepted!\n  </button>\n</div>"
 
 /***/ }),
 
