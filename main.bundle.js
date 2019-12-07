@@ -237,7 +237,7 @@ var LoginComponent = (function () {
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\" (click)=\"swapGraphs()\">\n    <svg height=\"100\" width=\"500\">\n      <polyline *ngFor=\"let g of status.graphs[graphIndex]\"\n        [attr.points]=\"g.pointString\" [ngStyle]=\"g.style\" />/>\n    </svg>\n  </div>\n  <p>\n    <span *ngFor=\"let g of status.graphs[graphIndex]\" [ngStyle]=\"{'color':g.color}\">\n      {{g.name + \": \" + g.values.slice(-7).join(\" \")}}<br></span>\n    latest points: {{status.status.latestPoints}}\n  </p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\" (click)=\"swapGraphs()\">\n    <svg height=\"100\" width=\"500\">\n      <polyline *ngFor=\"let g of status.graphs[graphIndex]\"\n        [attr.points]=\"g.pointString\" [ngStyle]=\"g.style\" />/>\n    </svg>\n  </div>\n  <p>\n    <span *ngFor=\"let g of status.graphs[graphIndex]\" [ngStyle]=\"{'color':g.color}\">\n      {{g.name + \": \" + g.values.slice(-7).join(\" \")}}<br></span>\n    latest points: {{status.status.latestPoints}}\n  </p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n  <br>\n  <br>\n  <br>\n  {{statusText}}<br>\n  <button (click)=\"pushBackReviews()\">push back reviews</button>\n</div>"
 
 /***/ }),
 
@@ -304,6 +304,7 @@ var MainComponent = (function () {
         this.router = router;
         this.sets = __WEBPACK_IMPORTED_MODULE_3__shared_consts__["a" /* SETS */];
         this.graphIndex = 0;
+        this.statusText = "";
     }
     MainComponent.prototype.new = function (setIndex, dirIndex) {
         return __awaiter(this, void 0, void 0, function () {
@@ -333,6 +334,23 @@ var MainComponent = (function () {
     };
     MainComponent.prototype.swapGraphs = function () {
         this.graphIndex = (this.graphIndex + 1) % this.status.graphs.length;
+    };
+    MainComponent.prototype.pushBackReviews = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.statusText = "pushing back.......";
+                        return [4 /*yield*/, this.status.pushBackReviews()];
+                    case 1:
+                        _a.sent();
+                        this.statusText = "done!";
+                        setTimeout(function () { return _this.statusText = ""; }, 2000);
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     MainComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
@@ -428,6 +446,16 @@ var ApiService = (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.postJsonToApi('results', study, { username: username })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ApiService.prototype.delayMemories = function (username) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getJsonFromApi('delay', { username: username })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -703,6 +731,21 @@ var StatusService = (function () {
                 style: { 'fill': 'none', 'stroke': type.color, 'stroke-width': 1 }
             };
         }
+    };
+    StatusService.prototype.pushBackReviews = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.apiService.delayMemories(this.username)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, this.updateUserStatus()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     StatusService.prototype.startNewStudy = function (setIndex, dirIndex) {
         return __awaiter(this, void 0, void 0, function () {
