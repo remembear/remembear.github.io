@@ -1065,7 +1065,7 @@ function removeIgnoredEndings(s) {
 /***/ "../../../../../src/app/study.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input *ngIf=\"!status.currentQuestion.options\" autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div>\n    <span *ngFor=\"let opt of status.currentQuestion.options; let o = index\">\n      <button (click)=\"setAnswer(opt)\"\n          [ngStyle]=\"{'font-size': '200%', 'background-color': opt === answer ? bgColor: 'white'}\">\n        {{opt}}\n      </button>\n      <br *ngIf=\"o % 5 == 4\">\n    </span>\n  </div>\n  <br>\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
+module.exports = "<form *ngIf=\"status.currentQuestion\" (ngSubmit)=\"check()\" #answerForm=\"ngForm\" style=\"padding-left: 30px; padding-right: 50px;\">\n  <h1 (click)=\"status.playCurrentWordAudio()\">{{status.isAudioQuestion ? \"🔊\" : status.currentQuestion.question}}</h1>\n  <p *ngIf=\"status.showInfo\">{{status.currentQuestion.info.join(' | ')}}</p>\n  <br>\n  <br>\n  <input *ngIf=\"!status.currentQuestion.options\" autofocus2 id=\"answ\" name=\"answ\" class=\"form-control answer-input\"\n    width=\"100%\" [(ngModel)]=\"answer\" #answ=\"ngModel\"\n    [ngStyle]=\"{'background-color': bgColor}\" autocomplete=\"off\">\n  <div>\n    <span *ngFor=\"let opt of status.currentQuestion.options; let o = index\">\n      <button (click)=\"setAnswer(opt)\"\n          [ngStyle]=\"{'font-size': '200%', 'background-color': opt === answer ? bgColor: 'white'}\">\n        {{opt}}\n      </button>\n      <br *ngIf=\"o % 5 == 4\">\n    </span>\n  </div>\n  <br>\n  {{timeRemaining}}\n  <br>\n  <br>\n  <h4 *ngIf=\"status.answered\">{{status.currentQuestion.fullAnswers}}</h4>\n  <h4 *ngIf=\"status.answered && status.currentQuestion.collection !== 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</h4>\n  <p *ngIf=\"status.answered && status.currentQuestion.collection === 'kanji'\">{{status.currentQuestion.otherFields.join(' | ')}}</p>\n</form>"
 
 /***/ }),
 
@@ -1094,6 +1094,7 @@ var StudyComponent = (function () {
         this.status = status;
         this.router = router;
         this.DELAY = 3000;
+        this.TIME_LIMIT = 10;
         this.next();
     }
     StudyComponent.prototype.next = function () {
@@ -1102,19 +1103,28 @@ var StudyComponent = (function () {
         this.bgColor = 'White';
         if (!this.status.done) {
             this.status.nextQuestion();
+            this.timeRemaining = this.TIME_LIMIT;
+            this.timer = setInterval(this.decrementTimer.bind(this), 1000);
         }
         else {
             this.router.navigate(['/main']);
         }
     };
+    StudyComponent.prototype.decrementTimer = function () {
+        this.timeRemaining--;
+        if (this.timeRemaining === 0) {
+            this.check();
+        }
+    };
     StudyComponent.prototype.setAnswer = function (answer) {
         this.answer = answer;
     };
-    StudyComponent.prototype.check = function (answer) {
+    StudyComponent.prototype.check = function () {
         var _this = this;
         //only check once!
         if (!this.checked) {
             this.checked = true;
+            clearInterval(this.timer);
             this.correct = this.status.checkAnswer(this.answer);
             if (this.correct) {
                 this.bgColor = 'PaleGreen';
