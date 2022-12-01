@@ -433,7 +433,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 
 var ApiService = (function () {
     function ApiService() {
-        this.API_URL = "https://remembear-api.herokuapp.com/"; //"http://localhost:8060/";
+        this.API_URL = 'https://remembear2.onrender.com/'; //https://remembear-api.herokuapp.com/";//"http://localhost:8060/";
     }
     ApiService.prototype.login = function (user) {
         return this.getJsonFromApi('login', user)
