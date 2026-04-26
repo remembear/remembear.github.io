@@ -237,7 +237,7 @@ var LoginComponent = (function () {
 /***/ "../../../../../src/app/main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\" (click)=\"swapGraphs()\">\n    <svg height=\"100\" width=\"500\">\n      <polyline *ngFor=\"let g of status.graphs[graphIndex]\"\n        [attr.points]=\"g.pointString\" [ngStyle]=\"g.style\" />/>\n    </svg>\n  </div>\n  <p>\n    <span *ngFor=\"let g of status.graphs[graphIndex]\" [ngStyle]=\"{'color':g.color}\">\n      {{g.name + \": \" + g.values.slice(-7).join(\" \")}}<br></span>\n    latest points: {{status.status.latestPoints}}\n  </p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n  <br>\n  <br>\n  <br>\n  {{statusText}}<br>\n  <button (click)=\"pushBackReviews()\">push back reviews</button>\n  <button (click)=\"pushForwardReviews()\">push forward reviews</button>\n</div>"
+module.exports = "<div *ngIf=\"status.status\">\n  <h1>{{status.username}} ({{status.status.totalPoints}} points)</h1>\n  <h3>word levels: {{status.status.wordsKnownByLevel}}</h3>\n  <div style=\"text-align:center;\" (click)=\"swapGraphs()\" (contextmenu)=\"toggleIgnoreEmptyDays($event)\">\n    <svg height=\"100\" width=\"500\">\n      <polyline *ngFor=\"let g of status.graphs[graphIndex]\"\n        [attr.points]=\"g.pointString\" [ngStyle]=\"g.style\" />/>\n    </svg>\n  </div>\n  <p>\n    <span *ngFor=\"let g of status.graphs[graphIndex]\" [ngStyle]=\"{'color':g.color}\">\n      {{g.name + \": \" + g.values.slice(-7).join(\" \")}}<br></span>\n    latest points: {{status.status.latestPoints}}\n  </p>\n  <img src=\"assets/panda.png\" width=70>\n  <div *ngFor=\"let set of sets; let s = index\">\n    <div *ngFor=\"let dir of set.directions; let d = index\">\n      {{set.name}} {{dir.name}} ({{status.status.wordsKnownByDirection[s][d]}})\n      <button [disabled]=\"s == 2\"\n        (click)=\"new(s,d)\">learn new</button>\n      <button (click)=\"review(s,d)\" [disabled]=\"status.status.wordsToReviewByDirection[s][d] < 10\">\n        review ({{status.status.wordsToReviewByDirection[s][d]}})</button>\n    </div>\n  </div>\n  <br>\n  <br>\n  <br>\n  {{statusText}}<br>\n  <button (click)=\"pushBackReviews()\">push back reviews</button>\n  <button (click)=\"pushForwardReviews()\">push forward reviews</button>\n</div>\n"
 
 /***/ }),
 
@@ -334,6 +334,11 @@ var MainComponent = (function () {
     };
     MainComponent.prototype.swapGraphs = function () {
         this.graphIndex = (this.graphIndex + 1) % this.status.graphs.length;
+    };
+    MainComponent.prototype.toggleIgnoreEmptyDays = function (event) {
+        event.preventDefault();
+        this.status.ignoreEmptyDays = !this.status.ignoreEmptyDays;
+        this.status.updateGraphs();
     };
     MainComponent.prototype.pushBackReviews = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -698,6 +703,7 @@ var StatusService = (function () {
         this.apiService = apiService;
         this.GRAPH_WIDTH = 500;
         this.GRAPH_HEIGHT = 100;
+        this.ignoreEmptyDays = true;
         this.graphs = [];
         this.username = this.authService.username;
         this.updateUserStatus();
@@ -724,24 +730,34 @@ var StatusService = (function () {
     StatusService.prototype.updateGraphs = function () {
         var _this = this;
         var thinkingPerStudy = __WEBPACK_IMPORTED_MODULE_0_lodash__["zipWith"](this.status.thinkingPerDay, this.status.studiesPerDay, __WEBPACK_IMPORTED_MODULE_0_lodash__["divide"])
-            .map(function (v) { return __WEBPACK_IMPORTED_MODULE_0_lodash__["round"](v, 2); });
+            .map(function (v) { return __WEBPACK_IMPORTED_MODULE_0_lodash__["round"](v, 1); });
+        var pointsPerThinking = __WEBPACK_IMPORTED_MODULE_0_lodash__["zipWith"](this.status.pointsPerDay, this.status.thinkingPerDay, __WEBPACK_IMPORTED_MODULE_0_lodash__["divide"])
+            .map(function (v) { return v ? __WEBPACK_IMPORTED_MODULE_0_lodash__["round"](v, 1) : 0; });
         var types = [
             { name: "studies", color: "blue", series: this.status.studiesPerDay },
             { name: "new learned", color: "lightblue", series: this.status.newPerDay },
             { name: "thinking", color: "red", series: this.status.thinkingPerDay },
-            { name: "points", color: "black", series: this.status.pointsPerDay }
+            { name: "points", color: "black", series: this.status.pointsPerDay },
         ];
         this.graphs = [];
         this.graphs.push(types.map(function (t) { return _this.toGraph(t, "daily "); }));
         this.graphs.push(types.map(function (t) { return _this.toGraph(t, "weekly ", 7); }));
         this.graphs.push(types.map(function (t) { return _this.toGraph(t, "monthly ", 30); }));
+        this.graphs.push(types.map(function (t) { return _this.toGraph(t, "yearly ", 365); }));
     };
     StatusService.prototype.toGraph = function (type, namePrefix, summarize) {
         var _this = this;
         var values = __WEBPACK_IMPORTED_MODULE_0_lodash__["clone"](type.series);
+        var studySeries = __WEBPACK_IMPORTED_MODULE_0_lodash__["clone"](this.status.studiesPerDay);
+        // Filter out empty days BEFORE summarization if ignoreEmptyDays is enabled
+        if (this.ignoreEmptyDays) {
+            var indices = studySeries.map(function (v, i) { return v > 0 ? i : -1; }).filter(function (i) { return i >= 0; });
+            values = indices.map(function (i) { return values[i]; });
+            studySeries = indices.map(function (i) { return studySeries[i]; });
+        }
         if (summarize) {
             values.reverse();
-            values = __WEBPACK_IMPORTED_MODULE_0_lodash__["chunk"](values, summarize).map(function (c) { return __WEBPACK_IMPORTED_MODULE_0_lodash__["sum"](c); });
+            values = __WEBPACK_IMPORTED_MODULE_0_lodash__["chunk"](values, summarize).map(function (c) { return __WEBPACK_IMPORTED_MODULE_0_lodash__["round"](__WEBPACK_IMPORTED_MODULE_0_lodash__["sum"](c), 1); });
             values.reverse();
         }
         if (values.length > 0) {
